@@ -1,62 +1,113 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 
 const NAV_LINKS = [
+  { label: 'Home',       href: '/' },
   { label: 'About',      href: '/about' },
   { label: 'Solutions',  href: '/solutions' },
   { label: 'Products',   href: '/products' },
   { label: 'Industries', href: '/industries' },
-  { label: 'Clients',    href: '/clients' },
 ]
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 20)
+    const handler = () => setScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 h-[68px] bg-white/97 backdrop-blur-md border-b border-black/[0.07] flex items-center justify-between px-14 transition-shadow duration-300 ${scrolled ? 'shadow-[0_4px_24px_rgba(0,0,0,0.08)]' : ''}`}
-    >
-      {/* Logo */}
-      <Link href="/" className="flex items-center gap-2.5 no-underline group">
-        <div className="w-[38px] h-[38px] bg-bpl-navy rounded-[7px] flex items-center justify-center transition-transform duration-300 group-hover:rotate-[-6deg] group-hover:scale-105">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 19C4 19 6.5 7 12 7C17.5 7 18.5 12 13 14C7.5 16 10 21 15 21"
-              stroke="#0078D4" strokeWidth={2.2} strokeLinecap="round" />
-          </svg>
-        </div>
-        <span className="font-display font-bold text-[17px] text-bpl-navy tracking-[-0.02em]">
-          Best Practices <span className="text-bpl-blue">Limited</span>
-        </span>
-      </Link>
+    <>
+      <nav className={`fixed top-9 left-0 right-0 z-50 h-[68px] bg-white border-b transition-all duration-200 ${scrolled ? 'border-[#E8ECF2] shadow-sm' : 'border-transparent'}`}>
+        <div className="max-w-[1280px] mx-auto h-full flex items-center justify-between px-6 md:px-10">
 
-      {/* Nav links */}
-      <ul className="flex items-center gap-1 list-none">
-        {NAV_LINKS.map((link) => (
-          <li key={link.href}>
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-lg overflow-hidden border border-[#E8ECF2] flex-shrink-0">
+              <Image src="/images/logo/BPL_LOGO.png" alt="BPL" width={36} height={36} className="w-full h-full object-cover" />
+            </div>
+            <div className="leading-tight">
+              <div className="font-display font-bold text-[15px] text-bpl-navy tracking-tight">
+                Best Practices <span className="text-bpl-blue">Limited</span>
+              </div>
+              <div className="text-[10px] font-medium text-bpl-mid-gray tracking-widest uppercase">
+                Est. 2001
+              </div>
+            </div>
+          </Link>
+
+          {/* Desktop links */}
+          <ul className="hidden md:flex items-center list-none">
+            {NAV_LINKS.map(link => {
+              const active = pathname === link.href
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`text-[13.5px] font-medium px-4 py-2 rounded-lg block transition-colors duration-150 ${
+                      active ? 'text-bpl-blue bg-bpl-blue-pale' : 'text-bpl-body hover:text-bpl-navy hover:bg-bpl-off-white'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+
+          {/* Right side */}
+          <div className="flex items-center gap-3">
             <Link
-              href={link.href}
-              className="text-[13.5px] font-medium text-bpl-body hover:text-bpl-navy hover:bg-bpl-off-white px-3.5 py-1.5 rounded-md transition-all duration-150"
+              href="/careers"
+              className="hidden md:block text-[13px] font-medium text-bpl-mid-gray hover:text-bpl-body transition-colors"
             >
-              {link.label}
+              Careers
             </Link>
-          </li>
-        ))}
-      </ul>
+            <Link
+              href="/contact"
+              className="bg-bpl-blue text-white text-[13.5px] font-semibold px-5 py-2 rounded-lg hover:bg-[#005BB5] transition-colors duration-150"
+            >
+              Get a Quote
+            </Link>
 
-      {/* CTA */}
-      <Link
-        href="/contact"
-        className="bg-bpl-blue text-white text-[13.5px] font-semibold px-5 py-2 rounded-md hover:bg-bpl-blue-light hover:-translate-y-px transition-all duration-150"
-      >
-        Get a Quote
-      </Link>
-    </nav>
+            {/* Mobile burger */}
+            <button
+              className="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-[5px]"
+              onClick={() => setMenuOpen(v => !v)}
+              aria-label="Menu"
+            >
+              <span className={`block w-5 h-px bg-bpl-navy transition-all duration-200 ${menuOpen ? 'rotate-45 translate-y-[3px]' : ''}`} />
+              <span className={`block w-5 h-px bg-bpl-navy transition-all duration-200 ${menuOpen ? 'opacity-0' : ''}`} />
+              <span className={`block w-5 h-px bg-bpl-navy transition-all duration-200 ${menuOpen ? '-rotate-45 -translate-y-[3px]' : ''}`} />
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="fixed top-[104px] left-0 right-0 z-40 bg-white border-b border-[#E8ECF2] shadow-lg md:hidden">
+          <div className="px-5 py-3 space-y-1">
+            {[...NAV_LINKS, { label: 'Careers', href: '/careers' }, { label: 'Contact', href: '/contact' }].map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="block text-[15px] font-medium text-bpl-body hover:text-bpl-blue px-3 py-2.5 rounded-lg hover:bg-bpl-blue-pale transition-all"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   )
 }

@@ -1,90 +1,62 @@
-'use client'
 import Image from 'next/image'
-import { TiltCard } from '@/components/ui/TiltCard'
+import Link from 'next/link'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { PRODUCTS } from '@/lib/content'
-import Link from 'next/link'
-
-// DROP YOUR 4K PRODUCT IMAGES HERE:
-// public/images/products/mix-vision.jpg     → MiX Vision dashcam/truck
-// public/images/products/mix-rovi.jpg       → in-cab display tablet
-// public/images/products/fuel-monitor.jpg   → tanker / fuel system
-// public/images/products/mix4000.jpg        → GPS hardware device
-// public/images/products/speed-limiter.jpg  → speed limiter device / truck cab
-// public/images/products/axle-sensor.jpg    → truck axle / wheels
-// Recommended: 1200×630px minimum, 16:9, compressed JPG
-
-function ProductPlaceholder() {
-  return (
-    <div className="w-full h-full flex items-center justify-center bg-bpl-navy-mid">
-      <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" opacity={0.3}>
-        <rect x="4" y="18" width="44" height="24" rx="4" stroke="white" strokeWidth="2"/>
-        <circle cx="14" cy="42" r="5" stroke="white" strokeWidth="2"/>
-        <circle cx="38" cy="42" r="5" stroke="white" strokeWidth="2"/>
-        <path d="M4 30h8M32 22l4-8h8l4 8" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-      </svg>
-    </div>
-  )
-}
 
 export function ProductsGrid() {
   return (
-    <section className="bg-bpl-off-white px-14 py-[96px]">
-      <div className="max-w-site mx-auto">
-        <RevealWrapper className="text-center mb-12">
-          <SectionLabel>Our Products</SectionLabel>
-          <h2 className="font-display text-[38px] font-bold text-bpl-navy tracking-[-0.025em] leading-[1.15]">
-            Technology that moves Nigeria
-          </h2>
-          <p className="text-[15px] text-bpl-body mt-3 max-w-[500px] mx-auto">
-            Hardware and software solutions for real-time fleet intelligence and safety.
-          </p>
+    <section className="bg-bpl-off-white py-20 md:py-28">
+      <div className="max-w-site mx-auto px-6 md:px-10">
+
+        <RevealWrapper className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-14">
+          <div>
+            <SectionLabel>Our Products</SectionLabel>
+            <h2 className="font-display font-bold text-bpl-navy text-[32px] md:text-[38px] tracking-tight leading-[1.15] mt-2">
+              Technology that moves Nigeria
+            </h2>
+          </div>
+          <Link
+            href="/products"
+            className="text-[13.5px] font-semibold text-bpl-blue hover:underline flex-shrink-0"
+          >
+            View all products →
+          </Link>
         </RevealWrapper>
 
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {PRODUCTS.map((product, i) => (
-            <RevealWrapper key={product.slug} delay={i * 0.08}>
-              <TiltCard className="bg-white border border-bpl-light-gray rounded-xl overflow-hidden group hover:border-bpl-blue hover:-translate-y-[5px] hover:shadow-[0_12px_36px_rgba(0,120,212,0.10)] transition-all duration-300">
-                {/* Image area */}
-                <div className="h-[180px] relative overflow-hidden bg-bpl-navy-mid">
+            <RevealWrapper key={product.slug} delay={i * 0.06}>
+              <Link
+                href="/contact"
+                className="group block bg-white rounded-2xl overflow-hidden border border-bpl-light-gray hover:border-bpl-blue/30 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.09)] transition-all duration-250"
+              >
+                {/* Image */}
+                <div className="relative h-48 bg-bpl-navy overflow-hidden">
                   <Image
                     src={`/images/products/${product.slug}.jpg`}
                     alt={product.name}
                     fill
-                    className="object-cover brightness-90 group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      // Hide broken image
-                      const target = e.currentTarget as HTMLImageElement
-                      target.style.display = 'none'
-                    }}
+                    className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
                   />
-                  <ProductPlaceholder />
-                  {/* Tag overlay */}
-                  <div className="absolute top-3 left-3 text-[10px] font-semibold tracking-[0.1em] uppercase text-white bg-bpl-blue/85 px-2.5 py-1 rounded backdrop-blur-sm z-10">
+                  <div className="absolute top-3 left-3 text-[10.5px] font-semibold tracking-[0.08em] uppercase text-white bg-bpl-navy-mid/90 border border-white/10 px-2.5 py-1 rounded-md">
                     {product.tag}
                   </div>
                 </div>
 
                 {/* Body */}
-                <div className="p-[22px]">
-                  <h3 className="font-display text-[15px] font-semibold text-bpl-navy mb-1.5">
+                <div className="p-6">
+                  <h3 className="font-display font-semibold text-bpl-navy text-[15px] mb-2 group-hover:text-bpl-blue transition-colors">
                     {product.name}
                   </h3>
-                  <p className="text-[13px] text-bpl-body leading-[1.6]">
+                  <p className="text-[13px] text-bpl-body leading-relaxed">
                     {product.description}
                   </p>
-                  {/* Enquire now — reveal on hover */}
-                  <div className="overflow-hidden h-0 group-hover:h-7 transition-all duration-200 mt-1">
-                    <Link
-                      href="/contact"
-                      className="text-[12.5px] font-semibold text-bpl-blue flex items-center gap-1 mt-2"
-                    >
-                      Enquire now →
-                    </Link>
+                  <div className="mt-4 text-[12.5px] font-semibold text-bpl-blue opacity-0 group-hover:opacity-100 transition-opacity">
+                    Enquire now →
                   </div>
                 </div>
-              </TiltCard>
+              </Link>
             </RevealWrapper>
           ))}
         </div>

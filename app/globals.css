@@ -2,69 +2,45 @@
 
 /* ─── TAILWIND V4 THEME ──────────────────────────────────── */
 @theme {
-  /* Colors */
-  --color-bpl-blue:       #0078D4;
+  --color-bpl-blue:       #0066CC;
   --color-bpl-blue-light: #3399E0;
-  --color-bpl-blue-pale:  #E8F4FD;
-  --color-bpl-navy:       #0D1B2A;
-  --color-bpl-navy-mid:   #1A2E42;
+  --color-bpl-blue-pale:  #EBF4FF;
+  --color-bpl-navy:       #0B1929;
+  --color-bpl-navy-mid:   #172840;
   --color-bpl-red:        #CC0000;
   --color-bpl-tan:        #D4A882;
-  --color-bpl-off-white:  #F7F9FC;
-  --color-bpl-light-gray: #EEF2F7;
-  --color-bpl-mid-gray:   #9BAAB8;
+  --color-bpl-off-white:  #F5F7FA;
+  --color-bpl-light-gray: #E8ECF2;
+  --color-bpl-mid-gray:   #8A9BB0;
   --color-bpl-body:       #3D5166;
 
-  /* Fonts */
   --font-display: var(--font-syne), sans-serif;
   --font-body:    var(--font-inter), sans-serif;
 
-  /* Max width */
   --max-width-site: 1200px;
 }
 
-/* ─── DESIGN TOKENS ──────────────────────────────────────── */
-:root {
-  /* Brand */
-  --blue:        #0078D4;
-  --blue-light:  #3399E0;
-  --blue-pale:   #E8F4FD;
-  --navy:        #0D1B2A;
-  --navy-mid:    #1A2E42;
-  --red:         #CC0000;
-  --tan:         #D4A882;
-
-  /* Surfaces */
-  --white:       #FFFFFF;
-  --off-white:   #F7F9FC;
-  --light-gray:  #EEF2F7;
-  --mid-gray:    #9BAAB8;
-
-  /* Text */
-  --dark-text:   #0D1B2A;
-  --body-text:   #3D5166;
-
-  /* Layout */
-  --max-w:       1200px;
-  --section-v:   96px;
-  --nav-h:       68px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─── BASE ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
-  font-family: var(--font-inter), 'Inter', sans-serif;
-  color: var(--dark-text);
-  background: var(--white);
+  font-family: var(--font-inter), sans-serif;
+  color: #0B1929;
+  background: #fff;
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+img, video { display: block; max-width: 100%; }
+*:focus-visible {
+  outline: 2px solid #0066CC;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 
-/* ─── ANIMATION KEYFRAMES ────────────────────────────────── */
-
-/* Ticker scroll */
+/* ─── KEYFRAMES ──────────────────────────────────────────── */
 @keyframes slide-left {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -73,31 +49,25 @@ body {
   0%   { transform: translateX(-50%); }
   100% { transform: translateX(0); }
 }
-
-/* Map route draw-on */
 @keyframes draw-route {
   to { stroke-dashoffset: 0; }
 }
-
-/* City pulse ring */
 @keyframes ring-out {
   0%   { r: 6;  opacity: 0.65; }
   100% { r: 18; opacity: 0;    }
 }
-
-/* Dot pulse */
 @keyframes dot-pulse {
   0%, 100% { opacity: 1;   transform: scale(1);   }
-  50%       { opacity: 0.3; transform: scale(0.6); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+@keyframes bpl-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 8px #4ADE80; }
+  50%       { opacity: 0.5; box-shadow: 0 0 3px #4ADE80; }
 }
 
-/* Stat bar hover */
-@keyframes bar-expand {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
+/* ─── UTILITIES ──────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
-/* Hero entrance reveal */
-@keyframes reveal {
-  to { opacity: 1; transform: translateY(0); }
-}
+.scrollbar-hide::-webkit-scrollbar { display: none; }

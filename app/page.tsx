@@ -6,6 +6,7 @@ import { AboutSplit } from '@/components/home/AboutSplit'
 import { ProductsGrid } from '@/components/home/ProductsGrid'
 import { ClientsCarousel } from '@/components/home/ClientsCarousel'
 import { Testimonial } from '@/components/home/Testimonial'
+import { PhotoStrip } from '@/components/home/PhotoStrip'
 import { CtaBand } from '@/components/home/CtaBand'
 
 export default function HomePage() {
@@ -19,6 +20,7 @@ export default function HomePage() {
       <ProductsGrid />
       <ClientsCarousel />
       <Testimonial />
+      <PhotoStrip />
       <CtaBand />
     </>
   )

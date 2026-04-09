@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Syne, Inter } from 'next/font/google'
 import './globals.css'
+import { TopBar } from '@/components/layout/TopBar'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 
@@ -32,16 +33,13 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${syne.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <TopBar />
         <Nav />
-        <main className="flex-1 pt-[68px]">
+        <main className="flex-1 pt-[104px]">
           {children}
         </main>
         <Footer />

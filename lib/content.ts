@@ -122,26 +122,26 @@ export const PRODUCTS: Product[] = [
 ]
 
 export const CLIENTS_TRACK_1: Client[] = [
-  { initials: 'SH', name: 'Shell Nigeria',   color: '#CC0000' },
-  { initials: 'TE', name: 'TotalEnergies',   color: '#E4002B' },
-  { initials: 'DH', name: 'DHL Logistics',   color: '#FFCC00', textColor: '#333' },
-  { initials: 'LA', name: 'Lafarge Africa',  color: '#005CA9' },
-  { initials: 'BH', name: 'Baker Hughes',    color: '#007AC9' },
-  { initials: 'WF', name: 'Weatherford',     color: '#0054A0' },
-  { initials: 'NV', name: 'NOV',             color: '#003087' },
+  { initials: 'SH', name: 'Shell Nigeria',   color: '#CC0000', logo: '/images/clients/shell.svg' },
+  { initials: 'TE', name: 'TotalEnergies',   color: '#E4002B', logo: '/images/clients/totalenergies.svg' },
+  { initials: 'DH', name: 'DHL Logistics',   color: '#FFCC00', textColor: '#333', logo: '/images/clients/dhl.svg' },
+  { initials: 'LA', name: 'Lafarge Africa',  color: '#005CA9', logo: '/images/clients/lafarge.svg' },
+  { initials: 'BH', name: 'Baker Hughes',    color: '#007AC9', logo: '/images/clients/baker-hughes.svg' },
+  { initials: 'WF', name: 'Weatherford',     color: '#0054A0', logo: '/images/clients/weatherford.svg' },
+  { initials: 'NV', name: 'NOV',             color: '#003087', logo: '/images/clients/nov.svg' },
   { initials: 'OV', name: 'OVH Energy',      color: '#F47920' },
-  { initials: 'BG', name: 'BG Nigeria',      color: '#00A550' },
+  { initials: 'BG', name: 'BG Nigeria',      color: '#00A550', logo: '/images/clients/bg-nigeria.svg' },
 ]
 
 export const CLIENTS_TRACK_2: Client[] = [
-  { initials: 'TB', name: 'TravelBeta',      color: '#6B21A8' },
-  { initials: 'CH', name: 'Chevron Nigeria', color: '#1D4ED8' },
+  { initials: 'TB', name: 'TravelBeta',      color: '#6B21A8', logo: '/images/clients/travelbeta.png' },
+  { initials: 'CH', name: 'Chevron Nigeria', color: '#1D4ED8', logo: '/images/clients/chevron.svg' },
   { initials: 'JM', name: 'JMG Limited',     color: '#059669' },
   { initials: 'EL', name: 'Elson Tech',      color: '#B45309' },
   { initials: 'MX', name: 'MiX Powerfleet',  color: '#0078D4' },
-  { initials: 'SB', name: 'Schlumberger',    color: '#7C3AED' },
-  { initials: 'HL', name: 'Halliburton',     color: '#DC2626' },
-  { initials: 'AG', name: 'Agip Energy',     color: '#16A34A' },
+  { initials: 'SB', name: 'Schlumberger',    color: '#7C3AED', logo: '/images/clients/schlumberger.svg' },
+  { initials: 'HL', name: 'Halliburton',     color: '#DC2626', logo: '/images/clients/halliburton.svg' },
+  { initials: 'AG', name: 'Agip Energy',     color: '#16A34A', logo: '/images/clients/agip.svg' },
 ]
 
 export const TICKER_ITEMS: TickerItem[] = [

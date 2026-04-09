@@ -17,6 +17,7 @@ export interface Client {
   name: string
   color: string
   textColor?: string
+  logo?: string
 }
 
 export interface Stat {

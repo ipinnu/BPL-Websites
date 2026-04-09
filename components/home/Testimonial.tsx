@@ -1,39 +1,29 @@
-'use client'
-import { useState } from 'react'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { TESTIMONIALS } from '@/lib/content'
 
 export function Testimonial() {
-  const [hovered, setHovered] = useState(false)
   const t = TESTIMONIALS[0]
-
   return (
-    <section
-      className="bg-bpl-navy"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className="max-w-site mx-auto grid grid-cols-[1fr_2fr] gap-20 items-center px-20 py-24">
-        {/* Giant quote mark */}
-        <RevealWrapper direction="left">
-          <div
-            className="font-display text-[130px] font-extrabold leading-none select-none transition-colors duration-500"
-            style={{ color: hovered ? 'rgba(51,153,224,0.30)' : 'rgba(51,153,224,0.18)' }}
-          >
-            &ldquo;
+    <section className="bg-bpl-navy py-20 md:py-28">
+      <div className="max-w-[860px] mx-auto px-6 md:px-10 text-center">
+        <RevealWrapper>
+          {/* Stars */}
+          <div className="flex justify-center gap-1 mb-8">
+            {[...Array(5)].map((_, i) => (
+              <svg key={i} width="18" height="18" viewBox="0 0 18 18" fill="#F59E0B">
+                <path d="M9 1.5L11 6.5H16.5L12 9.5L13.5 14.5L9 11.5L4.5 14.5L6 9.5L1.5 6.5H7L9 1.5Z" />
+              </svg>
+            ))}
           </div>
-        </RevealWrapper>
 
-        {/* Quote */}
-        <RevealWrapper delay={0.15}>
-          <blockquote className="text-[22px] font-light italic text-white/88 leading-[1.68] mb-7">
-            {t.quote}
+          <blockquote className="font-display font-light text-[20px] md:text-[26px] text-white/85 leading-[1.6] italic mb-10">
+            &ldquo;{t.quote}&rdquo;
           </blockquote>
-          <div>
-            <div className="text-[12px] font-semibold tracking-[0.08em] uppercase text-bpl-blue-light mb-1">
-              — {t.name}
-            </div>
-            <div className="text-[13px] text-white/50">{t.role}</div>
+
+          <div className="flex flex-col items-center gap-1">
+            <div className="w-10 h-px bg-white/20 mb-4" />
+            <p className="text-[13.5px] font-semibold text-white">{t.name}</p>
+            <p className="text-[12.5px] text-white/45">{t.role}</p>
           </div>
         </RevealWrapper>
       </div>

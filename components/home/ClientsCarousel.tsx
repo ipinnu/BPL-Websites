@@ -1,75 +1,73 @@
 'use client'
+import Image from 'next/image'
 import { CLIENTS_TRACK_1, CLIENTS_TRACK_2 } from '@/lib/content'
 import type { Client } from '@/lib/types'
 
 function ClientCard({ client }: { client: Client }) {
   return (
-    <div className="flex items-center gap-3 px-7 py-[14px] bg-bpl-off-white border-[1.5px] border-bpl-light-gray rounded-[10px] whitespace-nowrap group hover:border-bpl-blue hover:bg-bpl-blue-pale hover:-translate-y-[3px] hover:shadow-[0_6px_18px_rgba(0,120,212,0.10)] transition-all duration-200 cursor-default">
-      <span
-        className="w-8 h-8 rounded-[6px] flex items-center justify-center text-[11px] font-extrabold flex-shrink-0"
-        style={{
-          backgroundColor: client.color,
-          color: client.textColor ?? '#fff',
-        }}
-      >
-        {client.initials}
-      </span>
-      <span className="text-[13px] font-medium text-bpl-body group-hover:text-bpl-blue transition-colors">
-        {client.name}
-      </span>
+    <div className="flex items-center gap-3 px-5 py-3 bg-white border border-bpl-light-gray rounded-xl whitespace-nowrap flex-shrink-0 hover:border-bpl-blue/30 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 min-w-[140px]">
+      {client.logo ? (
+        <div className="h-7 w-20 relative flex-shrink-0">
+          <Image
+            src={client.logo}
+            alt={client.name}
+            fill
+            className="object-contain object-left"
+            sizes="80px"
+          />
+        </div>
+      ) : (
+        <span
+          className="w-8 h-8 rounded-lg flex items-center justify-center text-[10.5px] font-bold flex-shrink-0"
+          style={{ backgroundColor: client.color, color: client.textColor ?? '#fff' }}
+        >
+          {client.initials}
+        </span>
+      )}
+      <span className="text-[13px] font-medium text-bpl-body">{client.name}</span>
     </div>
   )
 }
 
 function Track({ clients, direction }: { clients: Client[]; direction: 'left' | 'right' }) {
   const doubled = [...clients, ...clients]
-  const anim = direction === 'left'
-    ? 'slide-left 28s linear infinite'
-    : 'slide-right 32s linear infinite'
-
   return (
     <div
-      className="flex gap-5 w-max"
-      style={{ animation: anim }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLDivElement).style.animationPlayState = 'paused' }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLDivElement).style.animationPlayState = 'running' }}
+      className="flex gap-3 w-max"
+      style={{ animation: `${direction === 'left' ? 'slide-left' : 'slide-right'} ${direction === 'left' ? 28 : 34}s linear infinite` }}
+      onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.animationPlayState = 'paused' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.animationPlayState = 'running' }}
     >
-      {doubled.map((client, i) => (
-        <ClientCard key={`${client.name}-${i}`} client={client} />
-      ))}
+      {doubled.map((c, i) => <ClientCard key={`${c.name}-${i}`} client={c} />)}
     </div>
   )
 }
 
 export function ClientsCarousel() {
   return (
-    <section className="bg-white py-[72px] overflow-hidden">
-      <div className="text-center mb-10">
-        <p className="text-[13px] font-semibold tracking-[0.08em] uppercase text-bpl-mid-gray">
-          Trusted by Nigeria&apos;s most demanding enterprise fleets
+    <section className="bg-white py-14 overflow-hidden">
+      <div className="text-center mb-8 px-6">
+        <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-bpl-mid-gray">
+          Trusted by 150+ enterprise clients across every major industry
         </p>
       </div>
 
-      <div className="space-y-5">
-        <div
-          className="overflow-hidden"
-          style={{
-            maskImage: 'linear-gradient(90deg, transparent 0%, black 7%, black 93%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 7%, black 93%, transparent 100%)',
-          }}
-        >
-          <Track clients={CLIENTS_TRACK_1} direction="left" />
-        </div>
-
-        <div
-          className="overflow-hidden"
-          style={{
-            maskImage: 'linear-gradient(90deg, transparent 0%, black 7%, black 93%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, black 7%, black 93%, transparent 100%)',
-          }}
-        >
-          <Track clients={CLIENTS_TRACK_2} direction="right" />
-        </div>
+      <div className="space-y-3">
+        {([
+          { clients: CLIENTS_TRACK_1, direction: 'left' as const },
+          { clients: CLIENTS_TRACK_2, direction: 'right' as const },
+        ]).map(({ clients, direction }, i) => (
+          <div
+            key={i}
+            className="overflow-hidden"
+            style={{
+              maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+            }}
+          >
+            <Track clients={clients} direction={direction} />
+          </div>
+        ))}
       </div>
     </section>
   )
