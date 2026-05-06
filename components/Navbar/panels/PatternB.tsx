@@ -1,55 +1,93 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import type { PatternBConfig, ProductColumn } from '../navbar.config'
 
-// ─── Inline SVG Icons ─────────────────────────────────────────────────────────
+// ─── Animated Icons ────────────────────────────────────────────────────────────
 
 function PlatformIcon() {
+  // Each tile pulses in sequence like live data nodes
+  const tiles = [
+    { x: 2,  y: 2,  delay: 0,    opacity: 1   },
+    { x: 11, y: 2,  delay: 0.3,  opacity: 0.6 },
+    { x: 2,  y: 11, delay: 0.6,  opacity: 0.6 },
+    { x: 11, y: 11, delay: 0.9,  opacity: 0.4 },
+  ]
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <rect x="2" y="2" width="7" height="7" rx="1.5" fill="#3399E0" />
-      <rect x="11" y="2" width="7" height="7" rx="1.5" fill="#3399E0" opacity="0.6" />
-      <rect x="2" y="11" width="7" height="7" rx="1.5" fill="#3399E0" opacity="0.6" />
-      <rect x="11" y="11" width="7" height="7" rx="1.5" fill="#3399E0" opacity="0.4" />
+      {tiles.map((t, i) => (
+        <motion.rect
+          key={i}
+          x={t.x} y={t.y} width="7" height="7" rx="1.5"
+          fill="#3399E0"
+          animate={{ opacity: [t.opacity, 1, t.opacity], scale: [1, 1.08, 1] }}
+          transition={{ duration: 1.8, delay: t.delay, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: `${t.x + 3.5}px ${t.y + 3.5}px` }}
+        />
+      ))}
     </svg>
   )
 }
 
 function SafetyIcon() {
+  // Shield breathes with a subtle scale, checkmark draws in on loop
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <path
+      <motion.path
         d="M10 2L3 5v5c0 4.1 2.93 7.93 7 9 4.07-1.07 7-4.9 7-9V5L10 2z"
         fill="none"
         stroke="#3399E0"
         strokeWidth="1.5"
         strokeLinejoin="round"
+        animate={{ scale: [1, 1.06, 1], opacity: [0.8, 1, 0.8] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ transformOrigin: '10px 10px' }}
       />
-      <path
+      <motion.path
         d="M7 10l2 2 4-4"
         stroke="#3399E0"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeDasharray="10"
+        animate={{ strokeDashoffset: [10, 0, 0, 10] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', times: [0, 0.4, 0.75, 1] }}
       />
     </svg>
   )
 }
 
 function CameraIcon() {
+  // Lens pulses like it's recording; wedge slides in
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
       <rect x="1" y="5" width="13" height="10" rx="2" fill="none" stroke="#3399E0" strokeWidth="1.5" />
-      <path d="M14 8.5l4-2.5v7l-4-2.5V8.5z" fill="#3399E0" opacity="0.7" />
-      <circle cx="7" cy="10" r="2.5" fill="#3399E0" opacity="0.4" />
+      <motion.path
+        d="M14 8.5l4-2.5v7l-4-2.5V8.5z"
+        fill="#3399E0"
+        animate={{ opacity: [0.7, 1, 0.7], x: [0, 1, 0] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.circle
+        cx="7" cy="10" r="2.5"
+        fill="#3399E0"
+        animate={{ opacity: [0.4, 0.85, 0.4], scale: [1, 1.15, 1] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ transformOrigin: '7px 10px' }}
+      />
     </svg>
   )
 }
 
 function FuelIcon() {
+  // Drop floats up and down gently
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+    <motion.svg
+      width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"
+      animate={{ y: [0, -2, 0] }}
+      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+    >
       <path
         d="M10 3C10 3 5 9.5 5 13a5 5 0 0010 0c0-3.5-5-10-5-10z"
         fill="none"
@@ -57,14 +95,15 @@ function FuelIcon() {
         strokeWidth="1.5"
         strokeLinejoin="round"
       />
-      <path
+      <motion.path
         d="M7.5 14a2.5 2.5 0 005 0"
         stroke="#3399E0"
         strokeWidth="1.2"
         strokeLinecap="round"
-        opacity="0.5"
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
       />
-    </svg>
+    </motion.svg>
   )
 }
 
