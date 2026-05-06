@@ -19,7 +19,7 @@ export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, numb
     tag: 'Video Telematics',
     description: '72-hour rolling video capture — in-cab and forward-facing — for incident context and full driver accountability.',
     specs: ['72-hour rolling video buffer', 'Forward-facing + in-cab cameras', 'AI-powered event detection & alerts'],
-    position: [0.3, 1.8, 1.2],
+    position: [-4.53, 1.43, -5.4],
   },
   {
     slug: 'mix-rovi',
