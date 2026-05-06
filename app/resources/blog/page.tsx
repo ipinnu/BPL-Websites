@@ -12,6 +12,22 @@ const fade = (delay = 0) => ({
   transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const },
 })
 
+// ─── Category colour system ───────────────────────────────────────────────────
+
+const CATEGORY_THEME: Record<string, { color: string; bg: string; border: string; glow: string }> = {
+  'Fleet Safety':  { color: '#F97316', bg: 'rgba(249,115,22,0.1)',  border: 'rgba(249,115,22,0.25)',  glow: 'rgba(249,115,22,0.15)'  },
+  'Technology':    { color: '#3399E0', bg: 'rgba(51,153,224,0.1)',  border: 'rgba(51,153,224,0.25)',  glow: 'rgba(51,153,224,0.15)'  },
+  'Operations':    { color: '#A78BFA', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.25)', glow: 'rgba(167,139,250,0.15)' },
+  'Compliance':    { color: '#FBBF24', bg: 'rgba(251,191,36,0.1)',  border: 'rgba(251,191,36,0.25)',  glow: 'rgba(251,191,36,0.15)'  },
+  'Sustainability':{ color: '#34D399', bg: 'rgba(52,211,153,0.1)',  border: 'rgba(52,211,153,0.25)',  glow: 'rgba(52,211,153,0.15)'  },
+  'Company':       { color: '#60A5FA', bg: 'rgba(96,165,250,0.1)',  border: 'rgba(96,165,250,0.25)',  glow: 'rgba(96,165,250,0.15)'  },
+  'Innovation':    { color: '#F472B6', bg: 'rgba(244,114,182,0.1)', border: 'rgba(244,114,182,0.25)', glow: 'rgba(244,114,182,0.15)' },
+}
+
+const theme = (category: string) =>
+  CATEGORY_THEME[category] ?? { color: '#3399E0', bg: 'rgba(51,153,224,0.1)', border: 'rgba(51,153,224,0.25)', glow: 'rgba(51,153,224,0.15)' }
+
+// ─── Posts ────────────────────────────────────────────────────────────────────
 
 const POSTS = [
   {
@@ -26,8 +42,8 @@ const POSTS = [
     slug:     'smart-fleet-telematics-features',
     category: 'Technology',
     date:     'April 22, 2026',
-    title:    'Smart Fleet Management: Top Telematics Features You Shouldn\'t Ignore',
-    excerpt:  'Fleet telematics is no longer a luxury — it\'s a necessity. From real-time GPS tracking and fuel monitoring to AI dashcams and predictive maintenance, the right system transforms your fleet into a safer, more cost-efficient operation.',
+    title:    "Smart Fleet Management: Top Telematics Features You Shouldn't Ignore",
+    excerpt:  "Fleet telematics is no longer a luxury — it's a necessity. From real-time GPS tracking and fuel monitoring to AI dashcams and predictive maintenance, the right system transforms your fleet into a safer, more cost-efficient operation.",
   },
   {
     slug:     'why-asset-protection-matters',
@@ -40,7 +56,7 @@ const POSTS = [
     slug:     'hours-of-service-fleet-compliance',
     category: 'Compliance',
     date:     'April 22, 2026',
-    title:    'Understanding Hours of Service: Why It\'s Essential for a Safe and Efficient Fleet',
+    title:    "Understanding Hours of Service: Why It's Essential for a Safe and Efficient Fleet",
     excerpt:  'Hours of Service regulations exist to reduce fatigue-related incidents on the road. Understanding how to track, manage, and automate HOS compliance is critical for any enterprise fleet operating in today\'s regulatory environment.',
   },
   {
@@ -54,26 +70,32 @@ const POSTS = [
     slug:     'bpl-leading-digital-fleet-nigeria',
     category: 'Company',
     date:     'October 29, 2024',
-    title:    'Best Practices Limited: Leading the Way in Digital Fleet Solutions in Nigeria',
-    excerpt:  'Since 2001, Best Practices Limited has built Nigeria\'s most comprehensive fleet intelligence offering — GPS tracking, driver training, telematics, and consulting — guided by the THIS principle: Truthfulness, Honesty, Integrity, and Service.',
+    title:    "Best Practices Limited: Leading the Way in Digital Fleet Solutions in Nigeria",
+    excerpt:  "Since 2001, Best Practices Limited has built Nigeria's most comprehensive fleet intelligence offering — GPS tracking, driver training, telematics, and consulting — guided by the THIS principle: Truthfulness, Honesty, Integrity, and Service.",
   },
   {
     slug:     'digital-fleet-solution-transformation',
     category: 'Innovation',
     date:     'April 20, 2023',
     title:    'Digital Fleet Solution: The Tool for Fleet Business Transformation',
-    excerpt:  'The shift from manual fleet oversight to fully digital operations isn\'t just an upgrade — it\'s a transformation. Data analytics, integrated platforms, and real-time insights are redefining what enterprise fleet management looks like in Africa.',
+    excerpt:  "The shift from manual fleet oversight to fully digital operations isn't just an upgrade — it's a transformation. Data analytics, integrated platforms, and real-time insights are redefining what enterprise fleet management looks like in Africa.",
   },
 ]
 
 const featured = POSTS.find(p => p.featured)!
 const rest     = POSTS.filter(p => !p.featured)
 
+// ─── Components ───────────────────────────────────────────────────────────────
+
 function CategoryPill({ category }: { category: string }) {
+  const t = theme(category)
   return (
     <span style={{
-      fontSize: 10, fontWeight: 600, letterSpacing: '0.1em',
-      textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
+      display: 'inline-flex', alignItems: 'center',
+      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+      textTransform: 'uppercase', color: t.color,
+      background: t.bg, border: `1px solid ${t.border}`,
+      borderRadius: 6, padding: '3px 8px',
       fontFamily: 'var(--font-inter)',
     }}>
       {category}
@@ -81,18 +103,18 @@ function CategoryPill({ category }: { category: string }) {
   )
 }
 
-function ReadMore({ href }: { href: string }) {
+function ReadMore({ href, color }: { href: string; color: string }) {
   return (
     <Link
       href={href}
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 6,
-        fontSize: 12, fontWeight: 600, color: '#3399E0',
+        fontSize: 12, fontWeight: 600, color,
         textDecoration: 'none', letterSpacing: '0.04em',
-        transition: 'color 0.15s',
+        transition: 'opacity 0.15s',
       }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#60A5FA' }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#3399E0' }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.7' }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1' }}
     >
       Read article
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -102,7 +124,11 @@ function ReadMore({ href }: { href: string }) {
   )
 }
 
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
 export default function BlogPage() {
+  const ft = theme(featured.category)
+
   return (
     <div style={{ background: '#040C18' }}>
 
@@ -150,17 +176,27 @@ export default function BlogPage() {
             <Link
               href={`/resources/blog/${featured.slug}`}
               className="group block rounded-2xl overflow-hidden"
-              style={{ border: '1px solid rgba(255,255,255,0.07)', textDecoration: 'none' }}
+              style={{
+                border: `1px solid ${ft.border}`,
+                textDecoration: 'none',
+                boxShadow: `0 0 40px ${ft.glow}`,
+                transition: 'box-shadow 0.3s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 0 60px ${ft.glow}` }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 0 40px ${ft.glow}` }}
             >
+              {/* Coloured top accent bar */}
+              <div style={{ height: 3, background: `linear-gradient(90deg, ${ft.color} 0%, transparent 100%)` }} />
+
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 {/* Left: content */}
-                <div className="px-10 py-12 flex flex-col justify-center" style={{ background: 'rgba(255,255,255,0.025)' }}>
+                <div className="px-10 py-12 flex flex-col justify-center" style={{ background: 'rgba(255,255,255,0.02)' }}>
                   <div className="flex items-center gap-4 mb-5">
                     <CategoryPill category={featured.category} />
                     <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-inter)' }}>{featured.date}</span>
                   </div>
                   <h2
-                    className="font-display font-bold text-white leading-[1.2] tracking-[-0.02em] mb-4 group-hover:text-blue-300 transition-colors duration-200"
+                    className="font-display font-bold text-white leading-[1.2] tracking-[-0.02em] mb-4 transition-colors duration-200"
                     style={{ fontSize: 'clamp(22px, 2.4vw, 32px)' }}
                   >
                     {featured.title}
@@ -170,7 +206,7 @@ export default function BlogPage() {
                   </p>
                   <span style={{
                     display: 'inline-flex', alignItems: 'center', gap: 6,
-                    fontSize: 12, fontWeight: 600, color: '#3399E0',
+                    fontSize: 12, fontWeight: 600, color: ft.color,
                     letterSpacing: '0.04em',
                   }}>
                     Read article
@@ -208,6 +244,7 @@ export default function BlogPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {rest.map((post, i) => {
+              const t = theme(post.category)
               return (
                 <RevealWrapper key={post.slug} delay={i * 0.08}>
                   <Link
@@ -215,13 +252,24 @@ export default function BlogPage() {
                     className="group flex flex-col h-full rounded-2xl overflow-hidden"
                     style={{
                       background: 'rgba(255,255,255,0.025)',
-                      border: '1px solid rgba(255,255,255,0.07)',
+                      border: `1px solid rgba(255,255,255,0.07)`,
                       textDecoration: 'none',
-                      transition: 'border-color 0.2s',
+                      transition: 'border-color 0.2s, box-shadow 0.2s',
                     }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(51,153,224,0.25)' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.07)' }}
+                    onMouseEnter={e => {
+                      const el = e.currentTarget as HTMLElement
+                      el.style.borderColor = t.border
+                      el.style.boxShadow = `0 0 24px ${t.glow}`
+                    }}
+                    onMouseLeave={e => {
+                      const el = e.currentTarget as HTMLElement
+                      el.style.borderColor = 'rgba(255,255,255,0.07)'
+                      el.style.boxShadow = 'none'
+                    }}
                   >
+                    {/* Coloured top bar */}
+                    <div style={{ height: 2, background: `linear-gradient(90deg, ${t.color} 0%, transparent 100%)` }} />
+
                     <div className="flex flex-col flex-1 p-7">
                       <div className="flex items-center gap-3 mb-4">
                         <CategoryPill category={post.category} />
@@ -230,7 +278,7 @@ export default function BlogPage() {
                       </div>
 
                       <h3
-                        className="font-display font-bold text-white leading-[1.25] tracking-[-0.02em] mb-3 group-hover:text-blue-300 transition-colors duration-150"
+                        className="font-display font-bold text-white leading-[1.25] tracking-[-0.02em] mb-3 transition-colors duration-150"
                         style={{ fontSize: 16 }}
                       >
                         {post.title}
@@ -240,7 +288,7 @@ export default function BlogPage() {
                         {post.excerpt}
                       </p>
 
-                      <ReadMore href={`/resources/blog/${post.slug}`} />
+                      <ReadMore href={`/resources/blog/${post.slug}`} color={t.color} />
                     </div>
                   </Link>
                 </RevealWrapper>
