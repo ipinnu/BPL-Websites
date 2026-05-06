@@ -53,7 +53,21 @@ export interface PatternCConfig {
   editorialCards: EditorialCard[]
 }
 
-export type NavItemConfig = PatternAConfig | PatternBConfig | PatternCConfig
+export interface PatternDConfig {
+  pattern: 'D'
+  label: string
+  eyebrow: string
+  links: NavLink[]
+  videoSrc?: string
+  columns: ProductColumn[]
+  footerCta: {
+    text: string
+    label: string
+    href: string
+  }
+}
+
+export type NavItemConfig = PatternAConfig | PatternBConfig | PatternCConfig | PatternDConfig
 
 export interface PlainNavItem {
   label: string
@@ -75,27 +89,18 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: 'Solutions',
     config: {
-      pattern: 'A',
+      pattern: 'D',
       label: 'Solutions',
       eyebrow: 'Fleet Intelligence Services',
       links: [
-        { label: 'Fleet Management & Tracking',   href: '/solutions#tracking' },
-        { label: 'Speed Limiting Devices',          href: '/solutions#speed' },
-        { label: 'Driver Training & Development',   href: '/solutions#training' },
-        { label: 'Fleet Consulting & Outsourcing',  href: '/solutions#consulting' },
-        { label: 'Fuel Monitoring',                 href: '/solutions#fuel' },
-        { label: 'Supply Chain Management',         href: '/solutions#supply-chain' },
+        { label: 'Fleet Management & Tracking',  href: '/solutions#tracking' },
+        { label: 'Speed Limiting Devices',        href: '/solutions#speed' },
+        { label: 'Driver Training & Development', href: '/solutions#training' },
+        { label: 'Fleet Consulting & Outsourcing',href: '/solutions#consulting' },
+        { label: 'Fuel Monitoring',               href: '/solutions#fuel' },
+        { label: 'Supply Chain Management',       href: '/solutions#supply-chain' },
       ],
-      // stock footage — trucks on highway, wide aerial
       videoSrc: '/videos/MiX%20Telematics%20_%20Hardware%20_%20MiX%20Vision.mp4',
-      videoLabel: 'Precision fleet intelligence — deployed across Nigeria',
-    },
-  },
-  {
-    label: 'Products',
-    config: {
-      pattern: 'B',
-      label: 'Products',
       columns: [
         {
           iconKey: 'platform',
@@ -121,25 +126,25 @@ export const NAV_ITEMS: NavItem[] = [
           iconKey: 'camera',
           title: 'Video Telematics',
           links: [
-            { label: 'MiX Vision Cameras',         href: '/products#mix-vision' },
-            { label: 'Forward-Facing Camera',       href: '/products#forward-cam' },
-            { label: 'In-Cab Driver Camera',        href: '/products#incab-cam' },
-            { label: 'Event-Triggered Recording',   href: '/products#event-rec' },
+            { label: 'MiX Vision Cameras',       href: '/products#mix-vision' },
+            { label: 'Forward-Facing Camera',     href: '/products#forward-cam' },
+            { label: 'In-Cab Driver Camera',      href: '/products#incab-cam' },
+            { label: 'Event-Triggered Recording', href: '/products#event-rec' },
           ],
         },
         {
           iconKey: 'fuel',
           title: 'Fuel & Compliance',
           links: [
-            { label: 'Fuel Monitoring System',   href: '/products#fuel-monitor' },
-            { label: 'Fleet Maintenance App',    href: '/products#maintenance' },
-            { label: 'Compliance Reporting',     href: '/products#compliance' },
-            { label: 'Axle Load Sensor',         href: '/products#axle' },
+            { label: 'Fuel Monitoring System', href: '/products#fuel-monitor' },
+            { label: 'Fleet Maintenance App',  href: '/products#maintenance' },
+            { label: 'Compliance Reporting',   href: '/products#compliance' },
+            { label: 'Axle Load Sensor',       href: '/products#axle' },
           ],
         },
       ],
       footerCta: {
-        text: 'Not sure which product fits your fleet?',
+        text: 'Not sure where to start?',
         label: 'Talk to a fleet expert →',
         href: '/contact',
       },

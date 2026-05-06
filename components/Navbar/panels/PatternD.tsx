@@ -1,0 +1,322 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import Image from 'next/image'
+import type { PatternDConfig, ProductColumn } from '../navbar.config'
+
+// ─── Animated product icons (reused from PatternB) ────────────────────────────
+
+function PlatformIcon() {
+  const tiles = [
+    { x: 2,  y: 2,  delay: 0,   opacity: 1   },
+    { x: 11, y: 2,  delay: 0.3, opacity: 0.6 },
+    { x: 2,  y: 11, delay: 0.6, opacity: 0.6 },
+    { x: 11, y: 11, delay: 0.9, opacity: 0.4 },
+  ]
+  return (
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      {tiles.map((t, i) => (
+        <motion.rect
+          key={i}
+          x={t.x} y={t.y} width="7" height="7" rx="1.5"
+          fill="#3399E0"
+          animate={{ opacity: [t.opacity, 1, t.opacity], scale: [1, 1.08, 1] }}
+          transition={{ duration: 1.8, delay: t.delay, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformOrigin: `${t.x + 3.5}px ${t.y + 3.5}px` }}
+        />
+      ))}
+    </svg>
+  )
+}
+
+function SafetyIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <motion.path
+        d="M10 2L3 5v5c0 4.1 2.93 7.93 7 9 4.07-1.07 7-4.9 7-9V5L10 2z"
+        fill="none" stroke="#3399E0" strokeWidth="1.5" strokeLinejoin="round"
+        animate={{ scale: [1, 1.06, 1], opacity: [0.8, 1, 0.8] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ transformOrigin: '10px 10px' }}
+      />
+      <motion.path
+        d="M7 10l2 2 4-4" stroke="#3399E0" strokeWidth="1.5"
+        strokeLinecap="round" strokeLinejoin="round"
+        strokeDasharray="10"
+        animate={{ strokeDashoffset: [10, 0, 0, 10] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', times: [0, 0.4, 0.75, 1] }}
+      />
+    </svg>
+  )
+}
+
+function CameraIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <rect x="1" y="5" width="13" height="10" rx="2" fill="none" stroke="#3399E0" strokeWidth="1.5" />
+      <motion.path
+        d="M14 8.5l4-2.5v7l-4-2.5V8.5z" fill="#3399E0"
+        animate={{ opacity: [0.7, 1, 0.7], x: [0, 1, 0] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+      />
+      <motion.circle
+        cx="7" cy="10" r="2.5" fill="#3399E0"
+        animate={{ opacity: [0.4, 0.85, 0.4], scale: [1, 1.15, 1] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ transformOrigin: '7px 10px' }}
+      />
+    </svg>
+  )
+}
+
+function FuelIcon() {
+  return (
+    <motion.svg
+      width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"
+      animate={{ y: [0, -2, 0] }}
+      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+    >
+      <path d="M10 3C10 3 5 9.5 5 13a5 5 0 0010 0c0-3.5-5-10-5-10z"
+        fill="none" stroke="#3399E0" strokeWidth="1.5" strokeLinejoin="round" />
+      <motion.path
+        d="M7.5 14a2.5 2.5 0 005 0" stroke="#3399E0" strokeWidth="1.2" strokeLinecap="round"
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+      />
+    </motion.svg>
+  )
+}
+
+function getIcon(key: ProductColumn['iconKey']) {
+  switch (key) {
+    case 'platform': return <PlatformIcon />
+    case 'safety':   return <SafetyIcon />
+    case 'camera':   return <CameraIcon />
+    case 'fuel':     return <FuelIcon />
+  }
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
+interface Props {
+  config: PatternDConfig
+  isOpen: boolean
+}
+
+export function PatternD({ config, isOpen }: Props) {
+  const videoRef    = useRef<HTMLVideoElement>(null)
+  const progressRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    if (isOpen) {
+      video.currentTime = 2
+      video.play().catch(() => {})
+    } else {
+      video.pause()
+      video.currentTime = 2
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    const video = videoRef.current
+    const bar   = progressRef.current
+    if (!video || !bar) return
+    const update = () => {
+      if (video.duration) bar.style.width = `${(video.currentTime / video.duration) * 100}%`
+    }
+    video.addEventListener('timeupdate', update)
+    return () => video.removeEventListener('timeupdate', update)
+  }, [])
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex' }}>
+
+        {/* ── Left: Solutions ───────────────────────────────────────── */}
+        <div style={{ width: 260, flexShrink: 0, padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: 0 }}>
+          <p style={{
+            fontSize: 9, letterSpacing: '0.13em', textTransform: 'uppercase',
+            color: 'rgba(51,153,224,0.5)', fontWeight: 700, marginBottom: 14,
+            fontFamily: 'var(--font-inter)',
+          }}>
+            {config.eyebrow}
+          </p>
+
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
+            {config.links.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '8px 10px', borderRadius: 8,
+                    fontSize: 13, fontWeight: 500,
+                    color: 'rgba(255,255,255,0.55)', textDecoration: 'none',
+                    transition: 'color 0.15s, background 0.15s',
+                    fontFamily: 'var(--font-inter)',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLElement
+                    el.style.color = '#fff'
+                    el.style.background = 'rgba(255,255,255,0.05)'
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLElement
+                    el.style.color = 'rgba(255,255,255,0.55)'
+                    el.style.background = 'transparent'
+                  }}
+                >
+                  <span style={{
+                    width: 4, height: 4, borderRadius: '50%',
+                    background: 'rgba(51,153,224,0.5)', flexShrink: 0,
+                  }} />
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          {/* Mini video strip */}
+          {config.videoSrc && (
+            <div style={{ marginTop: 20 }}>
+              <div style={{
+                borderRadius: 10, overflow: 'hidden', position: 'relative',
+                aspectRatio: '16/9',
+                background: 'linear-gradient(135deg, #040C18 0%, #081E36 100%)',
+              }}>
+                <video
+                  ref={videoRef}
+                  src={config.videoSrc}
+                  muted loop playsInline preload="none"
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div style={{
+                  position: 'absolute', top: 6, right: 8, zIndex: 2,
+                  width: 20, height: 20, borderRadius: 5, overflow: 'hidden',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(6px)',
+                }}>
+                  <Image src="/images/logo/BPL_LOGO.png" alt="BPL" width={20} height={20}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
+                  background: 'rgba(255,255,255,0.1)', zIndex: 3,
+                }}>
+                  <div ref={progressRef} style={{
+                    height: '100%', width: '0%', background: '#3399E0',
+                    boxShadow: '0 0 4px rgba(51,153,224,0.8)',
+                    transition: 'width 0.25s linear',
+                  }} />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ── Divider ───────────────────────────────────────────────── */}
+        <div style={{ width: 1, background: 'rgba(255,255,255,0.06)', margin: '20px 0', flexShrink: 0 }} />
+
+        {/* ── Right: Products ───────────────────────────────────────── */}
+        <div style={{ flex: 1, padding: '28px 24px' }}>
+          <p style={{
+            fontSize: 9, letterSpacing: '0.13em', textTransform: 'uppercase',
+            color: 'rgba(51,153,224,0.5)', fontWeight: 700, marginBottom: 14,
+            fontFamily: 'var(--font-inter)',
+          }}>
+            Our Products
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0 8px' }}>
+            {config.columns.map((col, i) => (
+              <div
+                key={col.iconKey}
+                style={{
+                  padding: '0 12px',
+                  borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                }}
+              >
+                {/* Column header */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                  <div style={{
+                    width: 24, height: 24, borderRadius: 7,
+                    background: 'rgba(0,102,204,0.15)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    {getIcon(col.iconKey)}
+                  </div>
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+                    textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)',
+                    fontFamily: 'var(--font-inter)',
+                  }}>
+                    {col.title}
+                  </span>
+                </div>
+
+                <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.07)', margin: '0 0 8px' }} />
+
+                <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {col.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        style={{
+                          display: 'block', fontSize: 12,
+                          color: 'rgba(255,255,255,0.45)', textDecoration: 'none',
+                          padding: '5px 6px', borderRadius: 5,
+                          fontFamily: 'var(--font-inter)',
+                          transition: 'color 0.15s, background 0.15s',
+                        }}
+                        onMouseEnter={e => {
+                          const el = e.currentTarget as HTMLElement
+                          el.style.color = '#fff'
+                          el.style.background = 'rgba(255,255,255,0.05)'
+                        }}
+                        onMouseLeave={e => {
+                          const el = e.currentTarget as HTMLElement
+                          el.style.color = 'rgba(255,255,255,0.45)'
+                          el.style.background = 'transparent'
+                        }}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Footer CTA ────────────────────────────────────────────────── */}
+      <div style={{
+        borderTop: '1px solid rgba(255,255,255,0.06)',
+        padding: '12px 32px',
+        display: 'flex', alignItems: 'center', gap: 6,
+      }}>
+        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-inter)' }}>
+          {config.footerCta.text}
+        </span>
+        <Link
+          href={config.footerCta.href}
+          style={{
+            fontSize: 12, fontWeight: 600, color: '#3399E0',
+            textDecoration: 'none', fontFamily: 'var(--font-inter)',
+            transition: 'color 0.15s', whiteSpace: 'nowrap',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.color = '#66B3EB' }}
+          onMouseLeave={e => { e.currentTarget.style.color = '#3399E0' }}
+        >
+          {config.footerCta.label}
+        </Link>
+      </div>
+    </div>
+  )
+}

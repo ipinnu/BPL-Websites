@@ -5,10 +5,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { NAV_ITEMS } from './navbar.config'
-import type { NavItem, PatternAConfig, PatternBConfig, PatternCConfig } from './navbar.config'
+import type { NavItem, PatternAConfig, PatternBConfig, PatternCConfig, PatternDConfig } from './navbar.config'
 import { PatternA } from './panels/PatternA'
 import { PatternB } from './panels/PatternB'
 import { PatternC } from './panels/PatternC'
+import { PatternD } from './panels/PatternD'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -21,12 +22,19 @@ function isPatternB(config: NonNullable<NavItem['config']>): config is PatternBC
 function isPatternC(config: NonNullable<NavItem['config']>): config is PatternCConfig {
   return config.pattern === 'C'
 }
+function isPatternD(config: NonNullable<NavItem['config']>): config is PatternDConfig {
+  return config.pattern === 'D'
+}
 
 /** Extract a flat link list from any config for mobile accordions */
 function getMobileLinks(config: NonNullable<NavItem['config']>): { label: string; href: string }[] {
   if (isPatternA(config)) return config.links
   if (isPatternB(config)) return config.columns.flatMap((c) => c.links)
   if (isPatternC(config)) return config.links
+  if (isPatternD(config)) return [
+    ...config.links,
+    ...config.columns.flatMap((c) => c.links),
+  ]
   return []
 }
 
@@ -425,6 +433,9 @@ export function Navbar() {
                   )}
                   {isPatternC(item.config) && (
                     <PatternC config={item.config} />
+                  )}
+                  {isPatternD(item.config) && (
+                    <PatternD config={item.config} isOpen={isOpen} />
                   )}
                 </div>
               </div>
