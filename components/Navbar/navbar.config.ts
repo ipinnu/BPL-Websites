@@ -193,12 +193,8 @@ export const NAV_ITEMS: NavItem[] = [
       pattern: 'C',
       label: 'Resources',
       links: [
-        { label: 'Case Studies',          href: '/resources/case-studies' },
-        { label: 'Blog & Insights',       href: '/resources/blog' },
-        { label: 'Downloads & Brochures', href: '/resources/downloads' },
-        { label: 'Webinars',              href: '/resources/webinars' },
-        { label: 'FAQs',                  href: '/resources/faqs' },
-        { label: 'Contact Support',       href: '/contact' },
+        { label: 'Blog & Insights', href: '/resources/blog' },
+        { label: 'Contact Support', href: '/contact' },
       ],
       // stock footage — data dashboard screens, analytics displays
       videoSrc: '/videos/MiX%20Telematics%20_%20Hardware%20_%20MiX%20Vision.mp4',
