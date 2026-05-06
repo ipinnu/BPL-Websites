@@ -233,8 +233,8 @@ function TruckScene({
       <OrbitControls
         ref={orbitRef}
         enablePan={false}
-        minDistance={5}
-        maxDistance={18}
+        minDistance={8}
+        maxDistance={28}
         minPolarAngle={Math.PI / 6}
         maxPolarAngle={Math.PI / 2.2}
         dampingFactor={0.08}
@@ -298,7 +298,7 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <Canvas
-        camera={{ position: [7, 4, 10], fov: 40 }}
+        camera={{ position: [10, 5, 16], fov: 35 }}
         shadows
         gl={{ alpha: true, antialias: true }}
         style={{ background: 'transparent' }}
