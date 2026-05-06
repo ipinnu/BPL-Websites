@@ -72,8 +72,8 @@ export default function ClientsPage() {
                 <div
                   className="group flex flex-col items-center justify-center gap-3 rounded-2xl p-6 transition-all duration-200"
                   style={{
-                    background: 'rgba(255,255,255,0.035)',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    background: 'rgba(255,255,255,0.07)',
+                    border: '1px solid rgba(255,255,255,0.1)',
                     minHeight: 110,
                   }}
                   onMouseEnter={e => {
@@ -83,7 +83,7 @@ export default function ClientsPage() {
                   }}
                   onMouseLeave={e => {
                     const el = e.currentTarget as HTMLElement
-                    el.style.background = 'rgba(255,255,255,0.035)'
+                    el.style.background = 'rgba(255,255,255,0.07)'
                     el.style.borderColor = 'rgba(255,255,255,0.08)'
                   }}
                 >
@@ -93,7 +93,7 @@ export default function ClientsPage() {
                         src={client.logo}
                         alt={client.name}
                         fill
-                        style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.75 }}
+                        style={{ objectFit: 'contain' }}
                       />
                     </div>
                   ) : (
