@@ -6,9 +6,19 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { PatternDConfig, ProductColumn } from '../navbar.config'
 
-// ─── Animated product icons (reused from PatternB) ────────────────────────────
+// ─── Icon colours ─────────────────────────────────────────────────────────────
+
+const ICON_COLORS: Record<ProductColumn['iconKey'], { stroke: string; fill: string; bg: string }> = {
+  platform: { stroke: '#3399E0', fill: '#3399E0', bg: 'rgba(51,153,224,0.12)'  }, // blue
+  safety:   { stroke: '#34D399', fill: '#34D399', bg: 'rgba(52,211,153,0.12)'  }, // emerald
+  camera:   { stroke: '#F97316', fill: '#F97316', bg: 'rgba(249,115,22,0.12)'  }, // orange
+  fuel:     { stroke: '#A78BFA', fill: '#A78BFA', bg: 'rgba(167,139,250,0.12)' }, // purple
+}
+
+// ─── Animated product icons ────────────────────────────────────────────────────
 
 function PlatformIcon() {
+  const c = ICON_COLORS.platform
   const tiles = [
     { x: 2,  y: 2,  delay: 0,   opacity: 1   },
     { x: 11, y: 2,  delay: 0.3, opacity: 0.6 },
@@ -21,7 +31,7 @@ function PlatformIcon() {
         <motion.rect
           key={i}
           x={t.x} y={t.y} width="7" height="7" rx="1.5"
-          fill="#3399E0"
+          fill={c.fill}
           animate={{ opacity: [t.opacity, 1, t.opacity], scale: [1, 1.08, 1] }}
           transition={{ duration: 1.8, delay: t.delay, repeat: Infinity, ease: 'easeInOut' }}
           style={{ transformOrigin: `${t.x + 3.5}px ${t.y + 3.5}px` }}
@@ -32,17 +42,18 @@ function PlatformIcon() {
 }
 
 function SafetyIcon() {
+  const c = ICON_COLORS.safety
   return (
     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
       <motion.path
         d="M10 2L3 5v5c0 4.1 2.93 7.93 7 9 4.07-1.07 7-4.9 7-9V5L10 2z"
-        fill="none" stroke="#3399E0" strokeWidth="1.5" strokeLinejoin="round"
+        fill="none" stroke={c.stroke} strokeWidth="1.5" strokeLinejoin="round"
         animate={{ scale: [1, 1.06, 1], opacity: [0.8, 1, 0.8] }}
         transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
         style={{ transformOrigin: '10px 10px' }}
       />
       <motion.path
-        d="M7 10l2 2 4-4" stroke="#3399E0" strokeWidth="1.5"
+        d="M7 10l2 2 4-4" stroke={c.stroke} strokeWidth="1.5"
         strokeLinecap="round" strokeLinejoin="round"
         strokeDasharray="10"
         animate={{ strokeDashoffset: [10, 0, 0, 10] }}
@@ -53,16 +64,17 @@ function SafetyIcon() {
 }
 
 function CameraIcon() {
+  const c = ICON_COLORS.camera
   return (
     <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-      <rect x="1" y="5" width="13" height="10" rx="2" fill="none" stroke="#3399E0" strokeWidth="1.5" />
+      <rect x="1" y="5" width="13" height="10" rx="2" fill="none" stroke={c.stroke} strokeWidth="1.5" />
       <motion.path
-        d="M14 8.5l4-2.5v7l-4-2.5V8.5z" fill="#3399E0"
+        d="M14 8.5l4-2.5v7l-4-2.5V8.5z" fill={c.fill}
         animate={{ opacity: [0.7, 1, 0.7], x: [0, 1, 0] }}
         transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
       />
       <motion.circle
-        cx="7" cy="10" r="2.5" fill="#3399E0"
+        cx="7" cy="10" r="2.5" fill={c.fill}
         animate={{ opacity: [0.4, 0.85, 0.4], scale: [1, 1.15, 1] }}
         transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
         style={{ transformOrigin: '7px 10px' }}
@@ -72,6 +84,7 @@ function CameraIcon() {
 }
 
 function FuelIcon() {
+  const c = ICON_COLORS.fuel
   return (
     <motion.svg
       width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"
@@ -79,9 +92,9 @@ function FuelIcon() {
       transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
     >
       <path d="M10 3C10 3 5 9.5 5 13a5 5 0 0010 0c0-3.5-5-10-5-10z"
-        fill="none" stroke="#3399E0" strokeWidth="1.5" strokeLinejoin="round" />
+        fill="none" stroke={c.stroke} strokeWidth="1.5" strokeLinejoin="round" />
       <motion.path
-        d="M7.5 14a2.5 2.5 0 005 0" stroke="#3399E0" strokeWidth="1.2" strokeLinecap="round"
+        d="M7.5 14a2.5 2.5 0 005 0" stroke={c.stroke} strokeWidth="1.2" strokeLinecap="round"
         animate={{ opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
       />
@@ -103,9 +116,10 @@ function getIcon(key: ProductColumn['iconKey']) {
 interface Props {
   config: PatternDConfig
   isOpen: boolean
+  onClose: () => void
 }
 
-export function PatternD({ config, isOpen }: Props) {
+export function PatternD({ config, isOpen, onClose }: Props) {
   const videoRef    = useRef<HTMLVideoElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
 
@@ -159,6 +173,12 @@ export function PatternD({ config, isOpen }: Props) {
                     transition: 'color 0.15s, background 0.15s',
                     fontFamily: 'var(--font-inter)',
                   }}
+                  onClick={e => {
+                    const el = e.currentTarget as HTMLElement
+                    el.style.background = 'rgba(51,153,224,0.15)'
+                    el.style.color = '#fff'
+                    setTimeout(onClose, 120)
+                  }}
                   onMouseEnter={e => {
                     const el = e.currentTarget as HTMLElement
                     el.style.color = '#fff'
@@ -200,7 +220,7 @@ export function PatternD({ config, isOpen }: Props) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
                   <div style={{
                     width: 20, height: 20, borderRadius: 5,
-                    background: 'rgba(0,102,204,0.15)',
+                    background: ICON_COLORS[col.iconKey].bg,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexShrink: 0,
                   }}>
@@ -226,6 +246,12 @@ export function PatternD({ config, isOpen }: Props) {
                           padding: '3px 5px', borderRadius: 4,
                           fontFamily: 'var(--font-inter)',
                           transition: 'color 0.15s, background 0.15s',
+                        }}
+                        onClick={e => {
+                          const el = e.currentTarget as HTMLElement
+                          el.style.background = ICON_COLORS[col.iconKey].bg
+                          el.style.color = ICON_COLORS[col.iconKey].stroke
+                          setTimeout(onClose, 120)
                         }}
                         onMouseEnter={e => {
                           const el = e.currentTarget as HTMLElement

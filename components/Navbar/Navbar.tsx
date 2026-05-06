@@ -426,16 +426,22 @@ export function Navbar() {
               >
                 <div style={{ maxWidth: 1280, margin: '0 auto' }}>
                   {isPatternA(item.config) && (
-                    <PatternA config={item.config} isOpen={isOpen} />
+                    <div onClick={() => setOpenItem(null)}>
+                      <PatternA config={item.config} isOpen={isOpen} />
+                    </div>
                   )}
                   {isPatternB(item.config) && (
-                    <PatternB config={item.config} />
+                    <div onClick={() => setOpenItem(null)}>
+                      <PatternB config={item.config} />
+                    </div>
                   )}
                   {isPatternC(item.config) && (
-                    <PatternC config={item.config} />
+                    <div onClick={() => setOpenItem(null)}>
+                      <PatternC config={item.config} />
+                    </div>
                   )}
                   {isPatternD(item.config) && (
-                    <PatternD config={item.config} isOpen={isOpen} />
+                    <PatternD config={item.config} isOpen={isOpen} onClose={() => setOpenItem(null)} />
                   )}
                 </div>
               </div>

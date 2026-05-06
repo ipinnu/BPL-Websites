@@ -12,23 +12,6 @@ const fade = (delay = 0) => ({
   transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const },
 })
 
-// ─── Category colour system ───────────────────────────────────────────────────
-
-const CATEGORY_THEME: Record<string, { color: string; bg: string; border: string; glow: string }> = {
-  'Fleet Safety':  { color: '#F97316', bg: 'rgba(249,115,22,0.1)',  border: 'rgba(249,115,22,0.25)',  glow: 'rgba(249,115,22,0.15)'  },
-  'Technology':    { color: '#3399E0', bg: 'rgba(51,153,224,0.1)',  border: 'rgba(51,153,224,0.25)',  glow: 'rgba(51,153,224,0.15)'  },
-  'Operations':    { color: '#A78BFA', bg: 'rgba(167,139,250,0.1)', border: 'rgba(167,139,250,0.25)', glow: 'rgba(167,139,250,0.15)' },
-  'Compliance':    { color: '#FBBF24', bg: 'rgba(251,191,36,0.1)',  border: 'rgba(251,191,36,0.25)',  glow: 'rgba(251,191,36,0.15)'  },
-  'Sustainability':{ color: '#34D399', bg: 'rgba(52,211,153,0.1)',  border: 'rgba(52,211,153,0.25)',  glow: 'rgba(52,211,153,0.15)'  },
-  'Company':       { color: '#60A5FA', bg: 'rgba(96,165,250,0.1)',  border: 'rgba(96,165,250,0.25)',  glow: 'rgba(96,165,250,0.15)'  },
-  'Innovation':    { color: '#F472B6', bg: 'rgba(244,114,182,0.1)', border: 'rgba(244,114,182,0.25)', glow: 'rgba(244,114,182,0.15)' },
-}
-
-const theme = (category: string) =>
-  CATEGORY_THEME[category] ?? { color: '#3399E0', bg: 'rgba(51,153,224,0.1)', border: 'rgba(51,153,224,0.25)', glow: 'rgba(51,153,224,0.15)' }
-
-// ─── Posts ────────────────────────────────────────────────────────────────────
-
 const POSTS = [
   {
     slug:     'why-dashcams-are-essential',
@@ -57,7 +40,7 @@ const POSTS = [
     category: 'Compliance',
     date:     'April 22, 2026',
     title:    "Understanding Hours of Service: Why It's Essential for a Safe and Efficient Fleet",
-    excerpt:  'Hours of Service regulations exist to reduce fatigue-related incidents on the road. Understanding how to track, manage, and automate HOS compliance is critical for any enterprise fleet operating in today\'s regulatory environment.',
+    excerpt:  "Hours of Service regulations exist to reduce fatigue-related incidents on the road. Understanding how to track, manage, and automate HOS compliance is critical for any enterprise fleet operating in today's regulatory environment.",
   },
   {
     slug:     'green-fleet-co2-emissions',
@@ -85,17 +68,11 @@ const POSTS = [
 const featured = POSTS.find(p => p.featured)!
 const rest     = POSTS.filter(p => !p.featured)
 
-// ─── Components ───────────────────────────────────────────────────────────────
-
 function CategoryPill({ category }: { category: string }) {
-  const t = theme(category)
   return (
     <span style={{
-      display: 'inline-flex', alignItems: 'center',
-      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
-      textTransform: 'uppercase', color: t.color,
-      background: t.bg, border: `1px solid ${t.border}`,
-      borderRadius: 6, padding: '3px 8px',
+      fontSize: 10, fontWeight: 600, letterSpacing: '0.1em',
+      textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
       fontFamily: 'var(--font-inter)',
     }}>
       {category}
@@ -103,32 +80,7 @@ function CategoryPill({ category }: { category: string }) {
   )
 }
 
-function ReadMore({ href, color }: { href: string; color: string }) {
-  return (
-    <Link
-      href={href}
-      style={{
-        display: 'inline-flex', alignItems: 'center', gap: 6,
-        fontSize: 12, fontWeight: 600, color,
-        textDecoration: 'none', letterSpacing: '0.04em',
-        transition: 'opacity 0.15s',
-      }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.7' }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1' }}
-    >
-      Read article
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="m9 18 6-6-6-6" />
-      </svg>
-    </Link>
-  )
-}
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
-
 export default function BlogPage() {
-  const ft = theme(featured.category)
-
   return (
     <div style={{ background: '#040C18' }}>
 
@@ -176,27 +128,16 @@ export default function BlogPage() {
             <Link
               href={`/resources/blog/${featured.slug}`}
               className="group block rounded-2xl overflow-hidden"
-              style={{
-                border: `1px solid ${ft.border}`,
-                textDecoration: 'none',
-                boxShadow: `0 0 40px ${ft.glow}`,
-                transition: 'box-shadow 0.3s',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 0 60px ${ft.glow}` }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = `0 0 40px ${ft.glow}` }}
+              style={{ border: '1px solid rgba(255,255,255,0.07)', textDecoration: 'none' }}
             >
-              {/* Coloured top accent bar */}
-              <div style={{ height: 3, background: `linear-gradient(90deg, ${ft.color} 0%, transparent 100%)` }} />
-
               <div className="grid grid-cols-1 lg:grid-cols-2">
-                {/* Left: content */}
-                <div className="px-10 py-12 flex flex-col justify-center" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                <div className="px-10 py-12 flex flex-col justify-center" style={{ background: 'rgba(255,255,255,0.025)' }}>
                   <div className="flex items-center gap-4 mb-5">
                     <CategoryPill category={featured.category} />
                     <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-inter)' }}>{featured.date}</span>
                   </div>
                   <h2
-                    className="font-display font-bold text-white leading-[1.2] tracking-[-0.02em] mb-4 transition-colors duration-200"
+                    className="font-display font-bold text-white leading-[1.2] tracking-[-0.02em] mb-4 group-hover:text-blue-300 transition-colors duration-200"
                     style={{ fontSize: 'clamp(22px, 2.4vw, 32px)' }}
                   >
                     {featured.title}
@@ -206,8 +147,7 @@ export default function BlogPage() {
                   </p>
                   <span style={{
                     display: 'inline-flex', alignItems: 'center', gap: 6,
-                    fontSize: 12, fontWeight: 600, color: ft.color,
-                    letterSpacing: '0.04em',
+                    fontSize: 12, fontWeight: 600, color: '#3399E0', letterSpacing: '0.04em',
                   }}>
                     Read article
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -216,7 +156,6 @@ export default function BlogPage() {
                   </span>
                 </div>
 
-                {/* Right: featured image */}
                 <div className="relative hidden lg:block" style={{ minHeight: 320 }}>
                   <Image
                     src="/images/gallery/Dash Cam blog.jpg"
@@ -243,57 +182,58 @@ export default function BlogPage() {
           </RevealWrapper>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {rest.map((post, i) => {
-              const t = theme(post.category)
-              return (
-                <RevealWrapper key={post.slug} delay={i * 0.08}>
-                  <Link
-                    href={`/resources/blog/${post.slug}`}
-                    className="group flex flex-col h-full rounded-2xl overflow-hidden"
-                    style={{
-                      background: 'rgba(255,255,255,0.025)',
-                      border: `1px solid rgba(255,255,255,0.07)`,
-                      textDecoration: 'none',
-                      transition: 'border-color 0.2s, box-shadow 0.2s',
-                    }}
-                    onMouseEnter={e => {
-                      const el = e.currentTarget as HTMLElement
-                      el.style.borderColor = t.border
-                      el.style.boxShadow = `0 0 24px ${t.glow}`
-                    }}
-                    onMouseLeave={e => {
-                      const el = e.currentTarget as HTMLElement
-                      el.style.borderColor = 'rgba(255,255,255,0.07)'
-                      el.style.boxShadow = 'none'
-                    }}
-                  >
-                    {/* Coloured top bar */}
-                    <div style={{ height: 2, background: `linear-gradient(90deg, ${t.color} 0%, transparent 100%)` }} />
-
-                    <div className="flex flex-col flex-1 p-7">
-                      <div className="flex items-center gap-3 mb-4">
-                        <CategoryPill category={post.category} />
-                        <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-inter)' }}>·</span>
-                        <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', fontFamily: 'var(--font-inter)' }}>{post.date}</span>
-                      </div>
-
-                      <h3
-                        className="font-display font-bold text-white leading-[1.25] tracking-[-0.02em] mb-3 transition-colors duration-150"
-                        style={{ fontSize: 16 }}
-                      >
-                        {post.title}
-                      </h3>
-
-                      <p className="text-[13px] leading-relaxed flex-1 mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>
-                        {post.excerpt}
-                      </p>
-
-                      <ReadMore href={`/resources/blog/${post.slug}`} color={t.color} />
+            {rest.map((post, i) => (
+              <RevealWrapper key={post.slug} delay={i * 0.08}>
+                <Link
+                  href={`/resources/blog/${post.slug}`}
+                  className="group flex flex-col h-full rounded-2xl overflow-hidden"
+                  style={{
+                    background: 'rgba(255,255,255,0.025)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                    textDecoration: 'none',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(51,153,224,0.25)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.07)' }}
+                >
+                  <div className="flex flex-col flex-1 p-7">
+                    <div className="flex items-center gap-3 mb-4">
+                      <CategoryPill category={post.category} />
+                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-inter)' }}>·</span>
+                      <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.28)', fontFamily: 'var(--font-inter)' }}>{post.date}</span>
                     </div>
-                  </Link>
-                </RevealWrapper>
-              )
-            })}
+
+                    <h3
+                      className="font-display font-bold text-white leading-[1.25] tracking-[-0.02em] mb-3 group-hover:text-blue-300 transition-colors duration-150"
+                      style={{ fontSize: 16 }}
+                    >
+                      {post.title}
+                    </h3>
+
+                    <p className="text-[13px] leading-relaxed flex-1 mb-6" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                      {post.excerpt}
+                    </p>
+
+                    <Link
+                      href={`/resources/blog/${post.slug}`}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        fontSize: 12, fontWeight: 600, color: '#3399E0',
+                        textDecoration: 'none', letterSpacing: '0.04em',
+                        transition: 'color 0.15s',
+                      }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#60A5FA' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#3399E0' }}
+                    >
+                      Read article
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                    </Link>
+                  </div>
+                </Link>
+              </RevealWrapper>
+            ))}
           </div>
         </div>
       </section>
