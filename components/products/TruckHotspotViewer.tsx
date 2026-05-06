@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense, useRef, useState, useEffect, useCallback } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, ThreeEvent } from '@react-three/fiber'
 import { useGLTF, Html, OrbitControls, Environment, ContactShadows } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
@@ -162,10 +162,11 @@ function HotspotMarker({
 // ─── Truck model + scene ──────────────────────────────────────────────────────
 
 function TruckScene({
-  onSelect, activeSlug,
+  onSelect, activeSlug, onDebugClick,
 }: {
   onSelect: (p: ModalProduct) => void
   activeSlug: string | null
+  onDebugClick?: (pos: [number, number, number]) => void
 }) {
   const { scene } = useGLTF(TRUCK_PATH)
   const groupRef = useRef<THREE.Group>(null)
@@ -244,7 +245,20 @@ function TruckScene({
       />
 
       <group ref={groupRef}>
-        <primitive object={scene} />
+        <primitive
+          object={scene}
+          onClick={(e: ThreeEvent<MouseEvent>) => {
+            e.stopPropagation()
+            if (onDebugClick && e.point) {
+              const p = e.point
+              onDebugClick([
+                Math.round(p.x * 100) / 100,
+                Math.round(p.y * 100) / 100,
+                Math.round(p.z * 100) / 100,
+              ])
+            }
+          }}
+        />
 
         {HOTSPOT_PRODUCTS.map(product => (
           <Html
@@ -294,11 +308,44 @@ interface Props {
 
 export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
   useHotspotStyles()
+  const [debugPos, setDebugPos] = useState<[number, number, number] | null>(null)
+  const [debugMode, setDebugMode] = useState(false)
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+      {/* Debug toggle */}
+      <button
+        onClick={() => { setDebugMode(d => !d); setDebugPos(null) }}
+        style={{
+          position: 'absolute', top: 12, right: 12, zIndex: 20,
+          fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+          padding: '4px 10px', borderRadius: 6,
+          background: debugMode ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.06)',
+          border: `1px solid ${debugMode ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.12)'}`,
+          color: debugMode ? '#EF4444' : 'rgba(255,255,255,0.3)',
+          cursor: 'pointer', fontFamily: 'var(--font-inter)',
+        }}
+      >
+        {debugMode ? 'DEBUG ON' : 'DEBUG'}
+      </button>
+
+      {/* Coordinate readout */}
+      {debugMode && (
+        <div style={{
+          position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 20, background: 'rgba(4,12,24,0.92)',
+          border: '1px solid rgba(51,153,224,0.4)', borderRadius: 8,
+          padding: '8px 16px', fontFamily: 'monospace', fontSize: 13,
+          color: '#60A5FA', whiteSpace: 'nowrap', backdropFilter: 'blur(8px)',
+        }}>
+          {debugPos
+            ? `position: [${debugPos[0]}, ${debugPos[1]}, ${debugPos[2]}]`
+            : 'Click any part of the truck to get its coordinates'}
+        </div>
+      )}
+
       <Canvas
-        camera={{ position: [10, 5, 16], fov: 35 }}
+        camera={{ position: [14, 6, 22], fov: 32 }}
         shadows
         gl={{ alpha: true, antialias: true }}
         style={{ background: 'transparent' }}
@@ -310,7 +357,11 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
 
         <Suspense fallback={null}>
           <Environment preset="warehouse" />
-          <TruckScene onSelect={onSelectProduct} activeSlug={activeSlug} />
+          <TruckScene
+            onSelect={onSelectProduct}
+            activeSlug={activeSlug}
+            onDebugClick={debugMode ? setDebugPos : undefined}
+          />
           <ContactShadows
             position={[0, -0.01, 0]}
             opacity={0.4}
@@ -320,8 +371,6 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
           />
         </Suspense>
       </Canvas>
-
-      {/* Loading state while Canvas mounts */}
     </div>
   )
 }
