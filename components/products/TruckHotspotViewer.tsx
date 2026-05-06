@@ -51,7 +51,7 @@ export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, numb
     tag: 'Fuel Management',
     description: 'Detect anomalies, prevent theft, and identify inefficient driving practices before they become costly.',
     specs: ['Real-time fuel consumption data', 'Theft & siphoning anomaly detection', 'Fleet-wide efficiency reporting'],
-    position: [-0.5, 0.6, -0.5],
+    position: [0.1, -1.25, 1.34],
   },
   {
     slug: 'axle-sensor',
@@ -63,32 +63,16 @@ export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, numb
   },
 ]
 
-// ─── Inject hotspot CSS once ──────────────────────────────────────────────────
-
-function useHotspotStyles() {
-  useEffect(() => {
-    if (document.getElementById('hotspot-styles')) return
-    const style = document.createElement('style')
-    style.id = 'hotspot-styles'
-    style.textContent = `
-      @keyframes ping {
-        0%   { transform: scale(1);   opacity: 0.9; }
-        70%  { transform: scale(2.2); opacity: 0;   }
-        100% { transform: scale(2.2); opacity: 0;   }
-      }
-      @keyframes ping-fast {
-        0%   { transform: scale(1);   opacity: 0.9; }
-        70%  { transform: scale(2.4); opacity: 0;   }
-        100% { transform: scale(2.4); opacity: 0;   }
-      }
-      .hotspot-ping       { animation: ping 2s cubic-bezier(0,0,0.2,1) infinite; }
-      .hotspot-ping-fast  { animation: ping-fast 0.9s cubic-bezier(0,0,0.2,1) infinite; }
-    `
-    document.head.appendChild(style)
-  }, [])
+const TAG_COLORS_HOTSPOT: Record<string, string> = {
+  'Video Telematics': '#3399E0',
+  'In-Cab Display':   '#60A5FA',
+  'Fuel Management':  '#4ADE80',
+  'Fleet Hardware':   '#A78BFA',
+  'Safety Hardware':  '#F59E0B',
+  'Telematics':       '#EF4444',
 }
 
-// ─── Hotspot marker (HTML overlay) ───────────────────────────────────────────
+// ─── Hotspot marker — diagram line style ──────────────────────────────────────
 
 function HotspotMarker({
   product, isActive, isAnyActive, onClick,
@@ -99,62 +83,69 @@ function HotspotMarker({
   onClick: () => void
 }) {
   const [hovered, setHovered] = useState(false)
+  const lit = isActive || hovered
+  const color = TAG_COLORS_HOTSPOT[product.tag] ?? '#3399E0'
+  // Label extends right if hotspot x >= 0, left otherwise
+  const goRight = product.position[0] >= 0
 
   return (
     <div
       onClick={e => { e.stopPropagation(); onClick() }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{ cursor: 'pointer', position: 'relative', userSelect: 'none' }}
-    >
-      {/* Ping ring */}
-      <div style={{
-        position: 'absolute',
-        width: 16, height: 16,
-        borderRadius: '50%',
-        border: '2px solid #0078D4',
-        top: -8, left: -8,
-        opacity: isAnyActive && !isActive ? 0.3 : 1,
-        transition: 'opacity 0.3s',
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: goRight ? 'row' : 'row-reverse',
+        cursor: 'pointer',
+        userSelect: 'none',
+        opacity: isAnyActive && !isActive ? 0.18 : 1,
+        transition: 'opacity 0.35s',
+        // Translate so the dot sits exactly on the 3D anchor point
+        transform: goRight ? 'translateY(-50%)' : 'translate(-100%, -50%)',
       }}
-        className={isActive || hovered ? 'hotspot-ping-fast' : 'hotspot-ping'}
-      />
-
-      {/* Inner dot */}
+    >
+      {/* Anchor dot */}
       <div style={{
-        width: 10, height: 10, borderRadius: '50%',
-        background: isActive || hovered ? '#60A5FA' : '#0078D4',
-        border: '2px solid rgba(255,255,255,0.4)',
-        position: 'relative', zIndex: 1,
-        transform: 'translate(-50%, -50%)',
-        boxShadow: '0 0 8px rgba(0,120,212,0.8)',
-        transition: 'background 0.2s, box-shadow 0.2s',
+        width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
+        background: lit ? '#fff' : color,
+        border: `1.5px solid ${lit ? color : 'rgba(255,255,255,0.25)'}`,
+        boxShadow: `0 0 ${lit ? 12 : 6}px ${color}`,
+        transition: 'all 0.2s',
       }} />
 
-      {/* Label tooltip */}
-      {hovered && (
-        <motion.div
-          initial={{ opacity: 0, y: 4, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.15 }}
-          style={{
-            position: 'absolute',
-            bottom: 18, left: '50%', transform: 'translateX(-50%)',
-            background: 'rgba(4,12,24,0.95)',
-            border: '1px solid rgba(51,153,224,0.35)',
-            borderRadius: 8, padding: '5px 10px',
-            whiteSpace: 'nowrap', zIndex: 10,
-            backdropFilter: 'blur(8px)',
-          }}
-        >
-          <span style={{
-            fontSize: 11, fontWeight: 600, color: '#fff',
-            fontFamily: 'var(--font-inter)', letterSpacing: '0.02em',
-          }}>
-            {product.name}
-          </span>
-        </motion.div>
-      )}
+      {/* Line */}
+      <div style={{
+        width: 40, height: 1, flexShrink: 0,
+        background: `linear-gradient(${goRight ? 'to right' : 'to left'}, ${color}${lit ? 'cc' : '66'}, ${color}11)`,
+        transition: 'background 0.2s',
+      }} />
+
+      {/* Label */}
+      <div style={{
+        padding: '5px 9px',
+        background: lit ? `${color}18` : 'rgba(4,12,24,0.78)',
+        border: `1px solid ${color}${lit ? '44' : '18'}`,
+        borderRadius: 5,
+        backdropFilter: 'blur(10px)',
+        transition: 'all 0.2s',
+      }}>
+        <div style={{
+          fontSize: 10.5, fontWeight: 700, color: lit ? '#fff' : 'rgba(255,255,255,0.8)',
+          fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.3,
+          transition: 'color 0.2s',
+        }}>
+          {product.name}
+        </div>
+        <div style={{
+          fontSize: 8.5, fontWeight: 600, color,
+          fontFamily: 'var(--font-inter)', letterSpacing: '0.09em',
+          textTransform: 'uppercase', whiteSpace: 'nowrap',
+          lineHeight: 1.3, marginTop: 2,
+        }}>
+          {product.tag}
+        </div>
+      </div>
     </div>
   )
 }
@@ -264,7 +255,6 @@ function TruckScene({
           <Html
             key={product.slug}
             position={product.position}
-            center
             zIndexRange={[50, 60]}
           >
             <HotspotMarker
@@ -307,7 +297,6 @@ interface Props {
 }
 
 export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
-  useHotspotStyles()
   const [debugPos, setDebugPos] = useState<[number, number, number] | null>(null)
   const [debugMode, setDebugMode] = useState(false)
 
