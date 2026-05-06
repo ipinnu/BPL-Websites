@@ -168,7 +168,16 @@ export default function BlogPage() {
                   <p className="text-[14.5px] leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.5)', maxWidth: 480 }}>
                     {featured.excerpt}
                   </p>
-                  <ReadMore href={`/resources/blog/${featured.slug}`} />
+                  <span style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    fontSize: 12, fontWeight: 600, color: '#3399E0',
+                    letterSpacing: '0.04em',
+                  }}>
+                    Read article
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </span>
                 </div>
 
                 {/* Right: featured image */}
