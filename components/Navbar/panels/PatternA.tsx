@@ -99,10 +99,11 @@ export function PatternA({ config, isOpen }: Props) {
     const video = videoRef.current
     if (!video) return
     if (isOpen) {
+      video.currentTime = 2
       video.play().catch(() => {})
     } else {
       video.pause()
-      video.currentTime = 0
+      video.currentTime = 2
     }
   }, [isOpen])
 
