@@ -121,35 +121,47 @@ function HotspotMarker({
       {/* Label card — combined or single */}
       {product.partner ? (
         <div style={{
-          background: 'rgba(4,12,24,0.82)',
+          background: 'rgba(4,12,24,0.88)',
           border: `1px solid rgba(255,255,255,0.1)`,
           borderRadius: 6,
           backdropFilter: 'blur(10px)',
-          overflow: 'hidden',
-          transition: 'border-color 0.2s',
+          padding: '6px 10px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 5,
         }}>
-          {/* First product row */}
+          {/* Compound label */}
+          <div style={{ fontSize: 7.5, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-inter)', marginBottom: 1 }}>
+            Hardware Suite
+          </div>
+          {/* Product A */}
           <div
             onClick={e => { e.stopPropagation(); onClick() }}
-            style={{ padding: '5px 10px', cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
           >
-            <div style={{ fontSize: 10.5, fontWeight: 700, color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.3 }}>
-              {product.name}
-            </div>
-            <div style={{ fontSize: 8.5, fontWeight: 600, color, fontFamily: 'var(--font-inter)', letterSpacing: '0.09em', textTransform: 'uppercase', whiteSpace: 'nowrap', lineHeight: 1.3, marginTop: 2 }}>
-              {product.tag}
+            <div style={{ width: 3, height: 3, borderRadius: '50%', background: color, flexShrink: 0 }} />
+            <div>
+              <div style={{ fontSize: 10.5, fontWeight: 700, color: 'rgba(255,255,255,0.88)', fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
+                {product.name}
+              </div>
+              <div style={{ fontSize: 8, fontWeight: 600, color, fontFamily: 'var(--font-inter)', letterSpacing: '0.09em', textTransform: 'uppercase', whiteSpace: 'nowrap', marginTop: 1 }}>
+                {product.tag}
+              </div>
             </div>
           </div>
-          {/* Partner row */}
+          {/* Product B */}
           <div
             onClick={e => { e.stopPropagation(); onClickPartner?.() }}
-            style={{ padding: '5px 10px', cursor: 'pointer' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
           >
-            <div style={{ fontSize: 10.5, fontWeight: 700, color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.3 }}>
-              {product.partner.name}
-            </div>
-            <div style={{ fontSize: 8.5, fontWeight: 600, color: partnerColor, fontFamily: 'var(--font-inter)', letterSpacing: '0.09em', textTransform: 'uppercase', whiteSpace: 'nowrap', lineHeight: 1.3, marginTop: 2 }}>
-              {product.partner.tag}
+            <div style={{ width: 3, height: 3, borderRadius: '50%', background: partnerColor, flexShrink: 0 }} />
+            <div>
+              <div style={{ fontSize: 10.5, fontWeight: 700, color: 'rgba(255,255,255,0.88)', fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.2 }}>
+                {product.partner.name}
+              </div>
+              <div style={{ fontSize: 8, fontWeight: 600, color: partnerColor, fontFamily: 'var(--font-inter)', letterSpacing: '0.09em', textTransform: 'uppercase', whiteSpace: 'nowrap', marginTop: 1 }}>
+                {product.partner.tag}
+              </div>
             </div>
           </div>
         </div>
