@@ -252,8 +252,8 @@ function TruckScene({
       <OrbitControls
         ref={orbitRef}
         enablePan={false}
-        minDistance={8}
-        maxDistance={28}
+        minDistance={12}
+        maxDistance={55}
         minPolarAngle={Math.PI / 6}
         maxPolarAngle={Math.PI / 2.2}
         dampingFactor={0.08}
