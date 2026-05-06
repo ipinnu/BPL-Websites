@@ -1,5 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
 import Link from 'next/link'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { SectionLabel } from '@/components/ui/SectionLabel'
@@ -170,34 +171,15 @@ export default function BlogPage() {
                   <ReadMore href={`/resources/blog/${featured.slug}`} />
                 </div>
 
-                {/* Right: decorative panel */}
-                <div
-                  className="relative hidden lg:flex items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, #071526 0%, #0A2040 50%, #071526 100%)',
-                    minHeight: 320,
-                  }}
-                >
-                  <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at 60% 40%, rgba(0,102,204,0.18) 0%, transparent 65%)' }} />
-                  {/* Icon graphic */}
-                  <div className="relative flex flex-col items-center gap-3">
-                    <div style={{
-                      width: 80, height: 80, borderRadius: 20,
-                      background: 'rgba(0,102,204,0.15)',
-                      border: '1px solid rgba(51,153,224,0.25)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#3399E0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="2" y="3" width="20" height="14" rx="2" />
-                        <path d="M8 21h8M12 17v4" />
-                        <circle cx="7" cy="10" r="1.5" fill="#3399E0" />
-                        <path d="M11 10h6M11 7h6M11 13h4" />
-                      </svg>
-                    </div>
-                    <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'rgba(51,153,224,0.5)' }}>
-                      Featured Article
-                    </span>
-                  </div>
+                {/* Right: featured image */}
+                <div className="relative hidden lg:block" style={{ minHeight: 320 }}>
+                  <Image
+                    src="/images/gallery/Dash Cam blog.jpg"
+                    alt="Dashcam for fleet management"
+                    fill
+                    style={{ objectFit: 'cover', objectPosition: 'center' }}
+                  />
+                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(4,12,24,0.35) 0%, transparent 40%)' }} />
                 </div>
               </div>
             </Link>
