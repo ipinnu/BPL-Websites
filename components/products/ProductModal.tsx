@@ -1,9 +1,7 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-
-const VIDEO_SRC = '/videos/MiX%20Telematics%20_%20Hardware%20_%20MiX%20Vision.mp4'
 
 const TAG_COLORS: Record<string, string> = {
   'Video Telematics':  '#3399E0',
@@ -28,20 +26,6 @@ interface Props {
 }
 
 export function ProductModal({ product, onClose }: Props) {
-  const videoRef = useRef<HTMLVideoElement>(null)
-
-  // Play/pause video with modal
-  useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
-    if (product) {
-      v.currentTime = 0
-      v.play().catch(() => {})
-    } else {
-      v.pause()
-    }
-  }, [product])
-
   // Escape key
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -85,7 +69,7 @@ export function ProductModal({ product, onClose }: Props) {
               maxHeight: '90vh', overflowY: 'auto',
               background: '#0a0a0a',
               border: '1px solid #1a1a1a',
-              borderRadius: 20,
+              borderRadius: 16,
               boxShadow: '0 40px 120px rgba(0,0,0,0.8)',
             }}
           >
@@ -109,20 +93,6 @@ export function ProductModal({ product, onClose }: Props) {
                 <path d="M18 6 6 18M6 6l12 12" />
               </svg>
             </button>
-
-            {/* Video */}
-            <div style={{ position: 'relative', aspectRatio: '16/9', background: '#040C18', borderRadius: '20px 20px 0 0', overflow: 'hidden' }}>
-              <video
-                ref={videoRef}
-                src={VIDEO_SRC}
-                muted loop playsInline
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: 'linear-gradient(to top, #0a0a0a 0%, transparent 50%)',
-              }} />
-            </div>
 
             {/* Content */}
             <div style={{ padding: '28px 32px 32px' }}>
