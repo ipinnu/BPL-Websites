@@ -8,7 +8,7 @@ import * as THREE from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import type { ModalProduct } from './ProductModal'
 
-const TRUCK_PATH = '/truck (1).glb'
+const TRUCK_PATH = '/truck%20(1).glb'
 
 // ─── Product data with hotspot positions + specs ──────────────────────────────
 
@@ -266,7 +266,7 @@ function TruckScene({
   )
 }
 
-useGLTF.preload(TRUCK_PATH)
+useGLTF.preload('/truck%20(1).glb')
 
 // ─── Loading fallback ─────────────────────────────────────────────────────────
 
@@ -300,6 +300,7 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
       <Canvas
         camera={{ position: [4, 3, 6], fov: 45 }}
         shadows
+        gl={{ alpha: true, antialias: true }}
         style={{ background: 'transparent' }}
       >
         <ambientLight intensity={0.4} />
@@ -307,9 +308,8 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
         <pointLight position={[-5, 3, -5]} intensity={3.0} color="#4a9eff" />
         <pointLight position={[0, -2, 4]} intensity={0.4} />
 
-        <Environment preset="warehouse" />
-
         <Suspense fallback={null}>
+          <Environment preset="warehouse" />
           <TruckScene onSelect={onSelectProduct} activeSlug={activeSlug} />
           <ContactShadows
             position={[0, -0.01, 0]}
