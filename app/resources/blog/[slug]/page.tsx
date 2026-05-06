@@ -1,4 +1,5 @@
 'use client'
+import { use } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -243,8 +244,9 @@ const POSTS: Post[] = [
   },
 ]
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = POSTS.find(p => p.slug === params.slug)
+export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
+  const post = POSTS.find(p => p.slug === slug)
   if (!post) notFound()
 
   const others = POSTS.filter(p => p.slug !== post.slug).slice(0, 3)
