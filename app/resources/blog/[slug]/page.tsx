@@ -1,5 +1,5 @@
 'use client'
-import { use } from 'react'
+import { use, useState } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
@@ -244,6 +244,202 @@ const POSTS: Post[] = [
   },
 ]
 
+// ─── Leave a Reply ────────────────────────────────────────────────────────────
+
+function ReplySection() {
+  const [form, setForm] = useState({ name: '', email: '', comment: '' })
+  const [submitted, setSubmitted] = useState(false)
+  const [focused, setFocused] = useState<string | null>(null)
+
+  const inputStyle = (field: string) => ({
+    width: '100%',
+    background: 'rgba(255,255,255,0.04)',
+    border: `1px solid ${focused === field ? 'rgba(51,153,224,0.5)' : 'rgba(255,255,255,0.09)'}`,
+    borderRadius: 10,
+    padding: '13px 16px',
+    fontSize: 14,
+    color: '#fff',
+    outline: 'none',
+    fontFamily: 'var(--font-inter)',
+    transition: 'border-color 0.2s',
+    boxSizing: 'border-box' as const,
+  })
+
+  const handle = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }))
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!form.name.trim() || !form.email.trim() || !form.comment.trim()) return
+    setSubmitted(true)
+  }
+
+  return (
+    <section className="px-8 md:px-14 xl:px-20 pb-20" style={{ background: '#040C18' }}>
+      <div className="max-w-[780px] mx-auto">
+        <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 48 }} />
+
+        {submitted ? (
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            style={{
+              borderRadius: 16,
+              border: '1px solid rgba(51,153,224,0.2)',
+              background: 'rgba(0,102,204,0.07)',
+              padding: '40px 36px',
+              textAlign: 'center',
+            }}
+          >
+            <div style={{
+              width: 52, height: 52, borderRadius: 14,
+              background: 'rgba(0,102,204,0.15)',
+              border: '1px solid rgba(51,153,224,0.25)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 20px',
+            }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3399E0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: '#fff', fontFamily: 'var(--font-inter)', marginBottom: 8 }}>
+              Thanks for your reply, {form.name.split(' ')[0]}!
+            </h3>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-inter)', lineHeight: 1.7 }}>
+              Your comment has been received and is awaiting moderation. We appreciate you taking the time to share your thoughts.
+            </p>
+          </motion.div>
+        ) : (
+          <>
+            {/* Header */}
+            <div style={{ marginBottom: 32 }}>
+              <p style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(51,153,224,0.6)', fontFamily: 'var(--font-inter)', marginBottom: 8 }}>
+                Join the conversation
+              </p>
+              <h3 className="font-display font-bold text-white tracking-tight" style={{ fontSize: 'clamp(20px, 2.5vw, 28px)' }}>
+                Leave a Reply
+              </h3>
+              <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-inter)', marginTop: 8, lineHeight: 1.6 }}>
+                Your email address will not be published. Required fields are marked with <span style={{ color: '#3399E0' }}>*</span>
+              </p>
+            </div>
+
+            <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+              {/* Name + Email row */}
+              <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 16 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-inter)' }}>
+                    Name <span style={{ color: '#3399E0' }}>*</span>
+                  </label>
+                  <input
+                    name="name"
+                    value={form.name}
+                    onChange={handle}
+                    onFocus={() => setFocused('name')}
+                    onBlur={() => setFocused(null)}
+                    placeholder="Your full name"
+                    required
+                    style={inputStyle('name')}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                  <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-inter)' }}>
+                    Email <span style={{ color: '#3399E0' }}>*</span>
+                  </label>
+                  <input
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handle}
+                    onFocus={() => setFocused('email')}
+                    onBlur={() => setFocused(null)}
+                    placeholder="you@company.com"
+                    required
+                    style={inputStyle('email')}
+                  />
+                </div>
+              </div>
+
+              {/* Website (optional) */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-inter)' }}>
+                  Website <span style={{ color: 'rgba(255,255,255,0.2)', fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>— optional</span>
+                </label>
+                <input
+                  name="website"
+                  type="url"
+                  onFocus={() => setFocused('website')}
+                  onBlur={() => setFocused(null)}
+                  placeholder="https://yourcompany.com"
+                  style={inputStyle('website')}
+                />
+              </div>
+
+              {/* Comment */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+                <label style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-inter)' }}>
+                  Comment <span style={{ color: '#3399E0' }}>*</span>
+                </label>
+                <textarea
+                  name="comment"
+                  value={form.comment}
+                  onChange={handle}
+                  onFocus={() => setFocused('comment')}
+                  onBlur={() => setFocused(null)}
+                  placeholder="Share your thoughts on this article…"
+                  required
+                  rows={6}
+                  style={{ ...inputStyle('comment'), resize: 'vertical', minHeight: 140 }}
+                />
+              </div>
+
+              {/* Consent + submit */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginTop: 4 }}>
+                <label style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    required
+                    style={{ marginTop: 2, accentColor: '#3399E0', flexShrink: 0 }}
+                  />
+                  <span style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-inter)', lineHeight: 1.65 }}>
+                    Save my name and email in this browser for the next time I comment.
+                  </span>
+                </label>
+
+                <button
+                  type="submit"
+                  style={{
+                    alignSelf: 'flex-start',
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    background: 'linear-gradient(135deg, #0066CC 0%, #3399E0 100%)',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: 10,
+                    padding: '13px 28px',
+                    fontSize: 14, fontWeight: 600,
+                    fontFamily: 'var(--font-inter)',
+                    cursor: 'pointer',
+                    letterSpacing: '0.02em',
+                    transition: 'opacity 0.2s',
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = '0.85' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = '1' }}
+                >
+                  Post Comment
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </>
+        )}
+      </div>
+    </section>
+  )
+}
+
 export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params)
   const post = POSTS.find(p => p.slug === slug)
@@ -368,6 +564,9 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
           </div>
         </div>
       </section>
+
+      {/* ── Leave a Reply ── */}
+      <ReplySection />
 
       {/* ── More articles ── */}
       {others.length > 0 && (
