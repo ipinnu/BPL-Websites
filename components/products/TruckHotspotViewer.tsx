@@ -12,7 +12,10 @@ const TRUCK_PATH = '/truck%20(1).glb'
 
 // ─── Product data with hotspot positions + specs ──────────────────────────────
 
-export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, number] })[] = [
+export const HOTSPOT_PRODUCTS: (ModalProduct & {
+  position: [number, number, number]
+  partner?: { slug: string; name: string; tag: string }
+})[] = [
   {
     slug: 'mix-vision',
     name: 'MiX Vision',
@@ -27,7 +30,7 @@ export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, numb
     tag: 'In-Cab Display',
     description: 'Android-powered 7" programmable display with navigation, job dispatching, and real-time driver alerts.',
     specs: ['7" Android touchscreen display', 'Real-time job dispatch & navigation', 'Live driver scoring & safety alerts'],
-    position: [0.0, 1.4, 1.5],
+    position: [0.5, 0.2, 6.42],
   },
   {
     slug: 'mix4000',
@@ -35,15 +38,8 @@ export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, numb
     tag: 'Fleet Hardware',
     description: 'GPS + GSM onboard computer enabling the full MiX Fleet Manager Premium platform on any vehicle.',
     specs: ['GPS + GSM dual connectivity', 'Full MiX Fleet Manager integration', 'Compatible with any vehicle type'],
-    position: [-0.2, 1.2, 0.8],
-  },
-  {
-    slug: 'speed-limiter',
-    name: 'Tamper-Resistant Speed Limiter',
-    tag: 'Safety Hardware',
-    description: 'Electronic speed control with data logging, tamper-proof design, and automatic activation.',
-    specs: ['Tamper-proof sealed housing', 'Automatic speed activation', 'Built-in data logging & reporting'],
-    position: [0.4, 0.8, 1.0],
+    position: [0.5, -0.85, 6.42],
+    partner: { slug: 'speed-limiter', name: 'Tamper-Resistant Speed Limiter', tag: 'Safety Hardware' },
   },
   {
     slug: 'fuel-monitor',
@@ -59,7 +55,7 @@ export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, numb
     tag: 'Telematics',
     description: 'GNOM DDE S7 pressure sensor for axle load monitoring and overload prevention on air suspension vehicles.',
     specs: ['GNOM DDE S7 wireless sensor', 'Air suspension compatible', 'Real-time overload prevention'],
-    position: [-2.6, -1.02, -2.17],
+    position: [-0.8, -1.02, -2.17],
   },
 ]
 
@@ -75,77 +71,108 @@ const TAG_COLORS_HOTSPOT: Record<string, string> = {
 // ─── Hotspot marker — diagram line style ──────────────────────────────────────
 
 function HotspotMarker({
-  product, isActive, isAnyActive, onClick,
+  product, isActive, isAnyActive, onClick, onClickPartner,
 }: {
   product: typeof HOTSPOT_PRODUCTS[number]
   isActive: boolean
   isAnyActive: boolean
   onClick: () => void
+  onClickPartner?: () => void
 }) {
   const [hovered, setHovered] = useState(false)
   const lit = isActive || hovered
   const color = TAG_COLORS_HOTSPOT[product.tag] ?? '#3399E0'
-  // Label extends right if hotspot x >= 0, left otherwise
+  const partnerColor = product.partner ? (TAG_COLORS_HOTSPOT[product.partner.tag] ?? '#3399E0') : color
   const goRight = product.position[0] >= 0
 
   return (
     <div
-      onClick={e => { e.stopPropagation(); onClick() }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
         display: 'flex',
         alignItems: 'center',
         flexDirection: goRight ? 'row' : 'row-reverse',
-        cursor: 'pointer',
         userSelect: 'none',
         opacity: isAnyActive && !isActive ? 0.18 : 1,
         transition: 'opacity 0.35s',
-        // Translate so the dot sits exactly on the 3D anchor point
         transform: goRight ? 'translateY(-50%)' : 'translate(-100%, -50%)',
       }}
     >
       {/* Anchor dot */}
-      <div style={{
-        width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-        background: lit ? '#fff' : color,
-        border: `1.5px solid ${lit ? color : 'rgba(255,255,255,0.25)'}`,
-        boxShadow: `0 0 ${lit ? 12 : 6}px ${color}`,
-        transition: 'all 0.2s',
-      }} />
+      <div
+        onClick={e => { e.stopPropagation(); onClick() }}
+        style={{
+          width: 6, height: 6, borderRadius: '50%', flexShrink: 0, cursor: 'pointer',
+          background: lit ? '#fff' : color,
+          border: `1.5px solid ${lit ? color : 'rgba(255,255,255,0.25)'}`,
+          boxShadow: `0 0 ${lit ? 12 : 6}px ${color}`,
+          transition: 'all 0.2s',
+        }}
+      />
 
       {/* Line */}
       <div style={{
-        width: 40, height: 1, flexShrink: 0,
-        background: `linear-gradient(${goRight ? 'to right' : 'to left'}, ${color}${lit ? 'cc' : '66'}, ${color}11)`,
+        width: 64, height: 1, flexShrink: 0,
+        background: `linear-gradient(${goRight ? 'to right' : 'to left'}, ${color}${lit ? 'cc' : '55'}, ${color}11)`,
         transition: 'background 0.2s',
       }} />
 
-      {/* Label */}
-      <div style={{
-        padding: '5px 9px',
-        background: lit ? `${color}18` : 'rgba(4,12,24,0.78)',
-        border: `1px solid ${color}${lit ? '44' : '18'}`,
-        borderRadius: 5,
-        backdropFilter: 'blur(10px)',
-        transition: 'all 0.2s',
-      }}>
+      {/* Label card — combined or single */}
+      {product.partner ? (
         <div style={{
-          fontSize: 10.5, fontWeight: 700, color: lit ? '#fff' : 'rgba(255,255,255,0.8)',
-          fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.3,
-          transition: 'color 0.2s',
+          background: 'rgba(4,12,24,0.82)',
+          border: `1px solid rgba(255,255,255,0.1)`,
+          borderRadius: 6,
+          backdropFilter: 'blur(10px)',
+          overflow: 'hidden',
+          transition: 'border-color 0.2s',
         }}>
-          {product.name}
+          {/* First product row */}
+          <div
+            onClick={e => { e.stopPropagation(); onClick() }}
+            style={{ padding: '5px 10px', cursor: 'pointer', borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+          >
+            <div style={{ fontSize: 10.5, fontWeight: 700, color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.3 }}>
+              {product.name}
+            </div>
+            <div style={{ fontSize: 8.5, fontWeight: 600, color, fontFamily: 'var(--font-inter)', letterSpacing: '0.09em', textTransform: 'uppercase', whiteSpace: 'nowrap', lineHeight: 1.3, marginTop: 2 }}>
+              {product.tag}
+            </div>
+          </div>
+          {/* Partner row */}
+          <div
+            onClick={e => { e.stopPropagation(); onClickPartner?.() }}
+            style={{ padding: '5px 10px', cursor: 'pointer' }}
+          >
+            <div style={{ fontSize: 10.5, fontWeight: 700, color: 'rgba(255,255,255,0.85)', fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.3 }}>
+              {product.partner.name}
+            </div>
+            <div style={{ fontSize: 8.5, fontWeight: 600, color: partnerColor, fontFamily: 'var(--font-inter)', letterSpacing: '0.09em', textTransform: 'uppercase', whiteSpace: 'nowrap', lineHeight: 1.3, marginTop: 2 }}>
+              {product.partner.tag}
+            </div>
+          </div>
         </div>
-        <div style={{
-          fontSize: 8.5, fontWeight: 600, color,
-          fontFamily: 'var(--font-inter)', letterSpacing: '0.09em',
-          textTransform: 'uppercase', whiteSpace: 'nowrap',
-          lineHeight: 1.3, marginTop: 2,
-        }}>
-          {product.tag}
+      ) : (
+        <div
+          onClick={e => { e.stopPropagation(); onClick() }}
+          style={{
+            padding: '5px 9px', cursor: 'pointer',
+            background: lit ? `${color}18` : 'rgba(4,12,24,0.78)',
+            border: `1px solid ${color}${lit ? '44' : '18'}`,
+            borderRadius: 5,
+            backdropFilter: 'blur(10px)',
+            transition: 'all 0.2s',
+          }}
+        >
+          <div style={{ fontSize: 10.5, fontWeight: 700, color: lit ? '#fff' : 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-inter)', whiteSpace: 'nowrap', lineHeight: 1.3, transition: 'color 0.2s' }}>
+            {product.name}
+          </div>
+          <div style={{ fontSize: 8.5, fontWeight: 600, color, fontFamily: 'var(--font-inter)', letterSpacing: '0.09em', textTransform: 'uppercase', whiteSpace: 'nowrap', lineHeight: 1.3, marginTop: 2 }}>
+            {product.tag}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
@@ -259,9 +286,15 @@ function TruckScene({
           >
             <HotspotMarker
               product={product}
-              isActive={activeSlug === product.slug}
+              isActive={activeSlug === product.slug || activeSlug === product.partner?.slug}
               isAnyActive={activeSlug !== null}
               onClick={() => onSelect(product)}
+              onClickPartner={() => {
+                if (product.partner) {
+                  const p = HOTSPOT_PRODUCTS.find(x => x.slug === product.partner!.slug)
+                  if (p) onSelect(p)
+                }
+              }}
             />
           </Html>
         ))}
@@ -334,7 +367,7 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
       )}
 
       <Canvas
-        camera={{ position: [14, 6, 22], fov: 32 }}
+        camera={{ position: [18, 7, 28], fov: 28 }}
         shadows
         gl={{ alpha: true, antialias: true }}
         style={{ background: 'transparent' }}
