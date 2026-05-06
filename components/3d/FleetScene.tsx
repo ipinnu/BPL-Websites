@@ -250,31 +250,13 @@ function buildHexGrid(R: number, COLS: number, ROWS: number) {
  * Each layer has independently animating hexes that pulse on and off.
  */
 function HexGrid() {
-  // ── Layer geometry ────────────────────────────────────────────
-  const layerA = useMemo(() => buildHexGrid(14, 26, 20), [])
-  const layerB = useMemo(() => buildHexGrid(9,  34, 26), [])
+  const layerA = useMemo(() => buildHexGrid(10, 30, 28), [])
+  const layerB = useMemo(() => buildHexGrid(6,  48, 44), [])
 
-  // ── Per-layer colour arrays (one colour per vertex pair per edge) ─
-  const colA = useMemo(() => new Float32Array(layerA.geo.attributes.position.count * 3).fill(0), [layerA])
-  const colB = useMemo(() => new Float32Array(layerB.geo.attributes.position.count * 3).fill(0), [layerB])
-
-  // Attach colour attribute
-  useMemo(() => {
-    layerA.geo.setAttribute('color', new THREE.BufferAttribute(colA, 3))
-    layerB.geo.setAttribute('color', new THREE.BufferAttribute(colB, 3))
-  }, [layerA, layerB, colA, colB])
-
-  // ── Activation state ──────────────────────────────────────────
-  // Each hex has a brightness value that decays over time
-  const brightnessA = useRef<Float32Array>(new Float32Array(layerA.centres.length))
-  const brightnessB = useRef<Float32Array>(new Float32Array(layerB.centres.length))
-
-  // ── Refs for the two layer groups (parallax target) ───────────
   const refA = useRef<THREE.Group>(null)
   const refB = useRef<THREE.Group>(null)
 
-  // ── Mouse for parallax ────────────────────────────────────────
-  const mouse  = useRef({ x: 0, y: 0 })
+  const mouse   = useRef({ x: 0, y: 0 })
   const smoothA = useRef({ x: 0, y: 0 })
   const smoothB = useRef({ x: 0, y: 0 })
 
@@ -287,55 +269,9 @@ function HexGrid() {
     return () => window.removeEventListener('mousemove', h)
   }, [])
 
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime
-
-    // ── Randomly activate hexes ──────────────────────────────────
-    // Layer A: ~2 activations per second
-    if (Math.random() < 0.035) {
-      const idx = Math.floor(Math.random() * brightnessA.current.length)
-      brightnessA.current[idx] = 1.0
-    }
-    // Layer B: ~3 activations per second
-    if (Math.random() < 0.05) {
-      const idx = Math.floor(Math.random() * brightnessB.current.length)
-      brightnessB.current[idx] = 1.0
-    }
-
-    // ── Decay & write colours ────────────────────────────────────
-    const writeLayer = (
-      brightness: Float32Array,
-      colours: Float32Array,
-      geo: THREE.BufferGeometry,
-      baseR: number, baseG: number, baseB: number,
-      activeR: number, activeG: number, activeB: number,
-    ) => {
-      const VERTS_PER_HEX = 12 // 6 edges × 2 verts
-      for (let i = 0; i < brightness.length; i++) {
-        brightness[i] = Math.max(0, brightness[i] - 0.018)
-        const b  = brightness[i]
-        const r  = baseR  + (activeR  - baseR)  * b
-        const g  = baseG  + (activeG  - baseG)  * b
-        const bv = baseB  + (activeB  - baseB)  * b
-        const base = i * VERTS_PER_HEX * 3
-        for (let v = 0; v < VERTS_PER_HEX; v++) {
-          colours[base + v * 3 + 0] = r
-          colours[base + v * 3 + 1] = g
-          colours[base + v * 3 + 2] = bv
-        }
-      }
-      ;(geo.attributes.color as THREE.BufferAttribute).needsUpdate = true
-    }
-
-    // Base colour: dark navy. Active colour: bright blue
-    writeLayer(brightnessA.current, colA, layerA.geo, 0.04, 0.14, 0.28,  0.18, 0.55, 1.0)
-    writeLayer(brightnessB.current, colB, layerB.geo, 0.03, 0.10, 0.22,  0.14, 0.48, 0.9)
-
-    // ── Parallax ─────────────────────────────────────────────────
-    // Layer A (far) moves subtly
+  useFrame(() => {
     smoothA.current.x += (mouse.current.x * 6  - smoothA.current.x) * 0.04
     smoothA.current.y += (mouse.current.y * 4  - smoothA.current.y) * 0.04
-    // Layer B (near) moves more
     smoothB.current.x += (mouse.current.x * 14 - smoothB.current.x) * 0.04
     smoothB.current.y += (mouse.current.y * 9  - smoothB.current.y) * 0.04
 
@@ -351,17 +287,14 @@ function HexGrid() {
 
   return (
     <>
-      {/* Far layer */}
       <group ref={refA} position={[0, 0, -22]}>
         <lineSegments geometry={layerA.geo}>
-          <lineBasicMaterial vertexColors transparent opacity={0.7} />
+          <lineBasicMaterial color="#2A6AAA" transparent opacity={0.55} />
         </lineSegments>
       </group>
-
-      {/* Near layer */}
       <group ref={refB} position={[0, 0, -10]}>
         <lineSegments geometry={layerB.geo}>
-          <lineBasicMaterial vertexColors transparent opacity={0.6} />
+          <lineBasicMaterial color="#1A4A80" transparent opacity={0.42} />
         </lineSegments>
       </group>
     </>
@@ -485,7 +418,7 @@ function CameraRig() {
   const smooth = useRef({ x: 0, y: 0 })
 
   // Camera fits the smaller map
-  const BASE = useMemo(() => ({ x: -5, y: 62, z: 155 }), [])
+  const BASE = useMemo(() => ({ x: -5, y: 62, z: 207 }), [])
 
   useEffect(() => {
     const h = (e: MouseEvent) => {
@@ -530,7 +463,7 @@ function Scene() {
       <pointLight position={[100, -100, 40]} intensity={2} color="#001233" distance={320} decay={2} />
 
       {/* Centered on the active Lagos–Abuja–PH corridor */}
-      <group position={[30, 0, 0]}>
+      <group position={[55, 0, 0]}>
         <HexGrid />
         <RadarRings />
         <NigeriaMap />
@@ -564,7 +497,7 @@ function Scene() {
 export default function FleetScene() {
   return (
     <Canvas
-      camera={{ position: [-5, 62, 155], fov: 52 }}
+      camera={{ position: [-5, 62, 207], fov: 52 }}
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
       style={{ position: 'absolute', inset: 0 }}

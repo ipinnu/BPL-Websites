@@ -150,6 +150,51 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ── Journey Timeline ── */}
+      <section
+        className="px-8 md:px-14 xl:px-20 py-24 md:py-32"
+        style={{ background: 'linear-gradient(180deg, #071526 0%, #040C18 100%)' }}
+      >
+        <div className="max-w-site mx-auto">
+          <RevealWrapper>
+            <SectionLabel light>Our Journey</SectionLabel>
+            <h2
+              className="font-display font-extrabold text-white tracking-[-0.03em] leading-[1.1] mt-3 mb-4"
+              style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}
+            >
+              Milestones that shaped us
+            </h2>
+            <p className="text-[15px] max-w-[480px] mb-16" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              From Nigeria Brewery&apos;s inaugural fleet to a nationwide network of enterprise clients — the key moments in BPL&apos;s story.
+            </p>
+          </RevealWrapper>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {ABOUT.milestones.map((m, i) => (
+              <RevealWrapper key={m.year} delay={i * 0.1}>
+                <div
+                  className="rounded-2xl p-7 h-full"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                  }}
+                >
+                  <div
+                    className="font-display font-extrabold text-[44px] leading-none tracking-[-0.04em] mb-4"
+                    style={{ color: 'rgba(0,102,204,0.28)' }}
+                  >
+                    {m.year}
+                  </div>
+                  <p className="text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    {m.event}
+                  </p>
+                </div>
+              </RevealWrapper>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Stats band ── */}
       <StatsBand />
 
@@ -227,6 +272,44 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ── THIS Values ── */}
+      <section
+        className="px-8 md:px-14 xl:px-20 py-24 md:py-32"
+        style={{ background: '#F5F7FA' }}
+      >
+        <div className="max-w-site mx-auto">
+          <RevealWrapper>
+            <SectionLabel>Our Values</SectionLabel>
+            <h2
+              className="font-display font-bold text-bpl-navy tracking-[-0.03em] leading-[1.2] mt-3 mb-4"
+              style={{ fontSize: 'clamp(28px, 3vw, 42px)' }}
+            >
+              The THIS principle
+            </h2>
+            <p className="text-[15px] text-bpl-body max-w-[480px] mb-14">
+              Four values that define how we show up — for clients, for partners, and for each other.
+            </p>
+          </RevealWrapper>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {ABOUT.values.map((v, i) => (
+              <RevealWrapper key={v.letter} delay={i * 0.1}>
+                <div className="bg-white rounded-2xl p-7 border border-bpl-light-gray h-full">
+                  <div
+                    className="font-display font-extrabold text-[56px] leading-none tracking-[-0.04em] mb-5"
+                    style={{ color: 'rgba(0,102,204,0.1)' }}
+                  >
+                    {v.letter}
+                  </div>
+                  <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-bpl-blue mb-2">{v.word}</div>
+                  <p className="text-[14px] text-bpl-body leading-relaxed">{v.desc}</p>
+                </div>
+              </RevealWrapper>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Gallery strip ── */}
       <section className="px-8 md:px-14 xl:px-20 pb-24" style={{ background: '#040C18' }}>
         <div className="max-w-site mx-auto">
@@ -250,6 +333,102 @@ export default function AboutPage() {
                     className="object-cover transition-transform duration-500 hover:scale-105"
                   />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(3,13,26,0.5) 0%, transparent 60%)' }} />
+                </div>
+              </RevealWrapper>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Team ── */}
+      <section
+        className="px-8 md:px-14 xl:px-20 py-24 md:py-32"
+        style={{ background: 'linear-gradient(180deg, #040C18 0%, #071526 100%)' }}
+      >
+        <div className="max-w-site mx-auto">
+          <RevealWrapper>
+            <SectionLabel light>Our Team</SectionLabel>
+            <h2
+              className="font-display font-extrabold text-white tracking-[-0.03em] leading-[1.1] mt-3 mb-14"
+              style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}
+            >
+              The people behind BPL
+            </h2>
+          </RevealWrapper>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {ABOUT.team.map((member, i) => (
+              <RevealWrapper key={member.name} delay={i * 0.1}>
+                <div
+                  className="rounded-2xl overflow-hidden"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                  }}
+                >
+                  {/* Photo */}
+                  <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
+                    <Image
+                      src={member.photo}
+                      alt={member.name}
+                      fill
+                      className="object-cover object-top"
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to top, rgba(7,21,38,0.7) 0%, transparent 55%)' }}
+                    />
+                  </div>
+                  {/* Info */}
+                  <div className="px-6 py-5">
+                    <div className="text-[16px] font-semibold text-white leading-snug mb-1">{member.name}</div>
+                    <div className="text-[11px] font-semibold tracking-[0.08em] uppercase" style={{ color: 'rgba(51,153,224,0.7)' }}>
+                      {member.role}
+                    </div>
+                  </div>
+                </div>
+              </RevealWrapper>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Awards ── */}
+      <section
+        className="px-8 md:px-14 xl:px-20 pb-24 pt-0"
+        style={{ background: '#071526' }}
+      >
+        <div className="max-w-site mx-auto">
+          <RevealWrapper>
+            <SectionLabel light>Recognition</SectionLabel>
+            <h2
+              className="font-display font-extrabold text-white tracking-[-0.03em] leading-[1.1] mt-3 mb-10"
+              style={{ fontSize: 'clamp(24px, 2.5vw, 36px)' }}
+            >
+              Awards &amp; industry recognition
+            </h2>
+          </RevealWrapper>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {ABOUT.awards.map((award, i) => (
+              <RevealWrapper key={award.year + award.title} delay={i * 0.12}>
+                <div
+                  className="rounded-2xl p-7 flex gap-6 items-start"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.07)',
+                  }}
+                >
+                  <div
+                    className="font-display font-extrabold text-[32px] leading-none tracking-[-0.04em] flex-shrink-0 pt-0.5"
+                    style={{ color: 'rgba(0,153,224,0.45)' }}
+                  >
+                    {award.year}
+                  </div>
+                  <div>
+                    <div className="text-[15px] font-semibold text-white mb-1.5">{award.title}</div>
+                    <div className="text-[13px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.4)' }}>{award.body}</div>
+                  </div>
                 </div>
               </RevealWrapper>
             ))}

@@ -22,10 +22,35 @@ export const HERO = {
 
 export const ABOUT = {
   year: '2001',
-  storyP1: "Founded in 2001, Best Practices Limited became Nigeria's strategic partner for MiX Telematics South Africa and Elson Truck Technology — deploying GPS tracking, road speed limiters, and fleet management SaaS across the country's most demanding enterprise fleets.",
-  storyP2: 'Today we serve oil & gas, FMCG, construction, and transport — with Shell, TotalEnergies, DHL, and Lafarge among our valued clients.',
-  vision:  'To be the Fleet Solutions & Value Added Services provider of choice — with good returns on investment for fleet owners and operators.',
-  mission: 'To provide innovative fleet solutions and services with focus on Cost Reduction, Efficiency and Safety — the CES principle.',
+  storyP1: "Founded in 2001, Best Practices Limited made Nigeria Brewery our inaugural major client — cementing our role as Nigeria's strategic partner for MiX Telematics (now MiX by Powerfleet) and Elson Truck Technology. We deploy GPS tracking, road speed limiters, and fleet management SaaS across the country's most demanding enterprise fleets.",
+  storyP2: 'Today we serve oil & gas, FMCG, construction, and transport — with Shell, TotalEnergies, DHL, Lafarge, and regional installers nationwide among our valued partners.',
+  vision:  "To be Nigeria's leading provider of fleet intelligence and value-added safety solutions that deliver strong returns on investment.",
+  mission: 'To deliver innovative fleet technologies and services that drive cost reduction, efficiency, and safety for fleet operators.',
+  milestones: [
+    { year: '2001', event: 'Nigeria Brewery became our inaugural major client, marking the beginning of our fleet intelligence journey.' },
+    { year: '2002', event: 'Strategic partnership established with MiX Telematics (now MiX by Powerfleet) — making BPL the authorised dealer in Nigeria.' },
+    { year: '2006', event: 'Shell Nigeria and TotalEnergies partnerships formed. Elson Truck Technology partnership began, expanding our hardware footprint.' },
+    { year: '2012', event: 'Won the MiX Telematics Dealer Competition — regional recognition for outstanding sales performance and client growth.' },
+    { year: '2017', event: 'Lafarge Africa Plc partnership launched, deepening our presence in construction and cement-sector fleets.' },
+    { year: '2024', event: "Received PowerFleet's 22-year service partnership recognition certificate — a testament to two decades of excellence." },
+  ],
+  team: [
+    { name: 'Abba Peter, PhD', role: 'Fleet Consulting Director', photo: '/images/gallery/CEOO.png' },
+    { name: 'Muyiwa Olalekan Babalola', role: 'Senior Service Delivery Manager', photo: '/images/gallery/Muyiwa-Baba.png' },
+    { name: 'Tayo Ojo', role: 'Senior Service Delivery Manager', photo: '/images/gallery/Ojo-Tayo.png' },
+    { name: 'Joshua Tobi', role: 'Service Delivery Manager', photo: '/images/gallery/Tobi-Joshua.png' },
+    { name: 'Aremu Adeolu', role: 'Service Delivery Manager', photo: '/images/gallery/Aremu-Adeolu.png' },
+  ],
+  awards: [
+    { year: '2012', title: 'Dealer Competition Winner', body: 'MiX Telematics (PowerFleet) — top-performing authorised dealer in the region.' },
+    { year: '2024', title: '22-Year Service Partnership Recognition', body: 'PowerFleet — certificate honouring over two decades of sustained excellence.' },
+  ],
+  values: [
+    { letter: 'T', word: 'Truthfulness', desc: 'We operate with full transparency in every client engagement, report, and recommendation.' },
+    { letter: 'H', word: 'Honesty', desc: 'Our counsel reflects what is right for the fleet, not what is most convenient for the sale.' },
+    { letter: 'I', word: 'Integrity', desc: 'Consistent standards, ethical conduct, and accountability define every project we deliver.' },
+    { letter: 'S', word: 'Service', desc: 'Excellence through innovation, collaboration, and a long-term commitment to sustainability.' },
+  ],
 }
 
 export const TESTIMONIALS: Testimonial[] = [
