@@ -367,7 +367,7 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
       )}
 
       <Canvas
-        camera={{ position: [18, 7, 28], fov: 28 }}
+        camera={{ position: [24, 9, 36], fov: 26 }}
         shadows
         gl={{ alpha: true, antialias: true }}
         style={{ background: 'transparent' }}
