@@ -216,7 +216,7 @@ function TruckScene({
         if (n.includes('bodycolour') || n.includes('body_colour') || n.includes('body colour')) {
           mat.color.set('#0078D4')
         } else if (n.includes('head_paint') || n.includes('head paint') || n.includes('headpaint')) {
-          mat.color.set('#ffffff')
+          mat.color.set('#0D1B2A')
         } else if (n.includes('flat_black') || n.includes('flat black')) {
           mat.color.set('#1a1a1a')
         } else if (n.includes('deep_black') || n.includes('deep black')) {
