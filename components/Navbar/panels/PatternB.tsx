@@ -174,19 +174,13 @@ export function PatternB({ config }: Props) {
       <div
         style={{
           borderTop: '1px solid rgba(255,255,255,0.06)',
+          padding: '14px 40px',
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '16px 40px',
+          gap: 6,
         }}
       >
-        <span
-          style={{
-            fontSize: 13,
-            color: 'rgba(255,255,255,0.35)',
-            fontFamily: 'var(--font-inter)',
-          }}
-        >
+        <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-inter)' }}>
           {config.footerCta.text}
         </span>
         <Link
@@ -198,6 +192,7 @@ export function PatternB({ config }: Props) {
             textDecoration: 'none',
             fontFamily: 'var(--font-inter)',
             transition: 'color 0.15s',
+            whiteSpace: 'nowrap',
           }}
           onMouseEnter={(e) => { e.currentTarget.style.color = '#66B3EB' }}
           onMouseLeave={(e) => { e.currentTarget.style.color = '#3399E0' }}

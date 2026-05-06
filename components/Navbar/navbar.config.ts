@@ -190,11 +190,9 @@ export const NAV_ITEMS: NavItem[] = [
       links: [
         { label: 'Case Studies',          href: '/resources/case-studies' },
         { label: 'Blog & Insights',       href: '/resources/blog' },
-        { label: 'White Papers',          href: '/resources/white-papers' },
         { label: 'Downloads & Brochures', href: '/resources/downloads' },
         { label: 'Webinars',              href: '/resources/webinars' },
         { label: 'FAQs',                  href: '/resources/faqs' },
-        { label: 'Help Center',           href: '/resources/help' },
         { label: 'Contact Support',       href: '/contact' },
       ],
       // stock footage — data dashboard screens, analytics displays
