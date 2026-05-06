@@ -59,7 +59,7 @@ export const HOTSPOT_PRODUCTS: (ModalProduct & { position: [number, number, numb
     tag: 'Telematics',
     description: 'GNOM DDE S7 pressure sensor for axle load monitoring and overload prevention on air suspension vehicles.',
     specs: ['GNOM DDE S7 wireless sensor', 'Air suspension compatible', 'Real-time overload prevention'],
-    position: [-4.11, -1.02, -2.17],
+    position: [-2.6, -1.02, -2.17],
   },
 ]
 
