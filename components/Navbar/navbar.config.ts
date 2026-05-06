@@ -206,19 +206,19 @@ export const NAV_ITEMS: NavItem[] = [
       videoHref: '/resources',
       editorialCards: [
         {
-          title: 'How Speed Limiters Reduce Road Fatalities in Nigeria',
-          summary: 'Data-backed look at how electronic speed control saves lives on Nigerian roads.',
-          href: '/resources/speed-limiters-safety',
+          title: 'Why Dashcams Are Essential for Modern Fleet Management',
+          summary: 'How AI-powered dashcams have evolved from simple recorders into proactive safety tools for enterprise fleets.',
+          href: '/resources/blog/why-dashcams-are-essential',
         },
         {
-          title: 'Fleet ROI: What Your Vehicles Are Really Costing You',
-          summary: 'Hidden costs in fuel, maintenance, and downtime — and how telematics closes the gap.',
-          href: '/resources/fleet-roi',
+          title: 'Driving Towards a Greener Future: How Smart Fleet Management Slashes CO₂ Emissions',
+          summary: 'Real-time fuel monitoring, route optimisation, and driver behaviour analysis — making fleets more sustainable.',
+          href: '/resources/blog/green-fleet-co2-emissions',
         },
         {
-          title: 'Telematics in Nigeria: From Reactive to Predictive Fleet Ops',
-          summary: 'How real-time vehicle data transforms fleet management for enterprise operators.',
-          href: '/resources/telematics-nigeria',
+          title: 'Digital Fleet Solution: The Tool for Fleet Business Transformation',
+          summary: 'How data analytics and integrated platforms are redefining enterprise fleet management across Africa.',
+          href: '/resources/blog/digital-fleet-solution-transformation',
         },
       ],
     },
