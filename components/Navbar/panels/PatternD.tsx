@@ -137,24 +137,24 @@ export function PatternD({ config, isOpen }: Props) {
       <div style={{ display: 'flex' }}>
 
         {/* ── Left: Solutions ───────────────────────────────────────── */}
-        <div style={{ width: 260, flexShrink: 0, padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: 0 }}>
+        <div style={{ width: 220, flexShrink: 0, padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
           <p style={{
-            fontSize: 9, letterSpacing: '0.13em', textTransform: 'uppercase',
-            color: 'rgba(51,153,224,0.5)', fontWeight: 700, marginBottom: 14,
+            fontSize: 8, letterSpacing: '0.13em', textTransform: 'uppercase',
+            color: 'rgba(51,153,224,0.5)', fontWeight: 700, marginBottom: 10,
             fontFamily: 'var(--font-inter)',
           }}>
             {config.eyebrow}
           </p>
 
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 0 }}>
             {config.links.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
-                    padding: '8px 10px', borderRadius: 8,
-                    fontSize: 13, fontWeight: 500,
+                    display: 'flex', alignItems: 'center', gap: 7,
+                    padding: '6px 8px', borderRadius: 6,
+                    fontSize: 12, fontWeight: 500,
                     color: 'rgba(255,255,255,0.55)', textDecoration: 'none',
                     transition: 'color 0.15s, background 0.15s',
                     fontFamily: 'var(--font-inter)',
@@ -171,7 +171,7 @@ export function PatternD({ config, isOpen }: Props) {
                   }}
                 >
                   <span style={{
-                    width: 4, height: 4, borderRadius: '50%',
+                    width: 3, height: 3, borderRadius: '50%',
                     background: 'rgba(51,153,224,0.5)', flexShrink: 0,
                   }} />
                   {link.label}
@@ -179,29 +179,27 @@ export function PatternD({ config, isOpen }: Props) {
               </li>
             ))}
           </ul>
-
         </div>
 
         {/* ── Divider ───────────────────────────────────────────────── */}
-        <div style={{ width: 1, background: 'rgba(255,255,255,0.06)', margin: '20px 0', flexShrink: 0 }} />
+        <div style={{ width: 1, background: 'rgba(255,255,255,0.06)', margin: '16px 0', flexShrink: 0 }} />
 
         {/* ── Centre: Products 2×2 ──────────────────────────────────── */}
-        <div style={{ flex: 1, padding: '28px 24px' }}>
+        <div style={{ flex: 1, padding: '20px 18px' }}>
           <p style={{
-            fontSize: 9, letterSpacing: '0.13em', textTransform: 'uppercase',
-            color: 'rgba(51,153,224,0.5)', fontWeight: 700, marginBottom: 14,
+            fontSize: 8, letterSpacing: '0.13em', textTransform: 'uppercase',
+            color: 'rgba(51,153,224,0.5)', fontWeight: 700, marginBottom: 10,
             fontFamily: 'var(--font-inter)',
           }}>
             Our Products
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: '1fr 1fr', gap: '16px 12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 8px' }}>
             {config.columns.map((col) => (
-              <div key={col.iconKey} style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                {/* Column header */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+              <div key={col.iconKey} style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
                   <div style={{
-                    width: 24, height: 24, borderRadius: 7,
+                    width: 20, height: 20, borderRadius: 5,
                     background: 'rgba(0,102,204,0.15)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     flexShrink: 0,
@@ -209,7 +207,7 @@ export function PatternD({ config, isOpen }: Props) {
                     {getIcon(col.iconKey)}
                   </div>
                   <span style={{
-                    fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
+                    fontSize: 9, fontWeight: 700, letterSpacing: '0.07em',
                     textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)',
                     fontFamily: 'var(--font-inter)',
                   }}>
@@ -217,15 +215,15 @@ export function PatternD({ config, isOpen }: Props) {
                   </span>
                 </div>
 
-                <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 0 }}>
                   {col.links.map((link) => (
                     <li key={link.href}>
                       <Link
                         href={link.href}
                         style={{
-                          display: 'block', fontSize: 12,
-                          color: 'rgba(255,255,255,0.45)', textDecoration: 'none',
-                          padding: '4px 6px', borderRadius: 5,
+                          display: 'block', fontSize: 11,
+                          color: 'rgba(255,255,255,0.4)', textDecoration: 'none',
+                          padding: '3px 5px', borderRadius: 4,
                           fontFamily: 'var(--font-inter)',
                           transition: 'color 0.15s, background 0.15s',
                         }}
@@ -236,7 +234,7 @@ export function PatternD({ config, isOpen }: Props) {
                         }}
                         onMouseLeave={e => {
                           const el = e.currentTarget as HTMLElement
-                          el.style.color = 'rgba(255,255,255,0.45)'
+                          el.style.color = 'rgba(255,255,255,0.4)'
                           el.style.background = 'transparent'
                         }}
                       >
@@ -251,13 +249,13 @@ export function PatternD({ config, isOpen }: Props) {
         </div>
 
         {/* ── Divider ───────────────────────────────────────────────── */}
-        <div style={{ width: 1, background: 'rgba(255,255,255,0.06)', margin: '20px 0', flexShrink: 0 }} />
+        <div style={{ width: 1, background: 'rgba(255,255,255,0.06)', margin: '16px 0', flexShrink: 0 }} />
 
         {/* ── Right: Video ──────────────────────────────────────────── */}
         {config.videoSrc && (
-          <div style={{ width: 240, flexShrink: 0, padding: '28px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ width: 180, flexShrink: 0, padding: '20px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{
-              borderRadius: 12, overflow: 'hidden', position: 'relative',
+              borderRadius: 10, overflow: 'hidden', position: 'relative',
               aspectRatio: '16/9',
               background: 'linear-gradient(135deg, #040C18 0%, #081E36 100%)',
             }}>
@@ -273,12 +271,12 @@ export function PatternD({ config, isOpen }: Props) {
                 pointerEvents: 'none',
               }} />
               <div style={{
-                position: 'absolute', top: 8, right: 10, zIndex: 2,
-                width: 24, height: 24, borderRadius: 6, overflow: 'hidden',
+                position: 'absolute', top: 6, right: 7, zIndex: 2,
+                width: 18, height: 18, borderRadius: 4, overflow: 'hidden',
                 border: '1px solid rgba(255,255,255,0.15)',
                 background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(6px)',
               }}>
-                <Image src="/images/logo/BPL_LOGO.png" alt="BPL" width={24} height={24}
+                <Image src="/images/logo/BPL_LOGO.png" alt="BPL" width={18} height={18}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{
@@ -287,12 +285,12 @@ export function PatternD({ config, isOpen }: Props) {
               }}>
                 <div ref={progressRef} style={{
                   height: '100%', width: '0%', background: '#3399E0',
-                  boxShadow: '0 0 6px rgba(51,153,224,0.8)',
+                  boxShadow: '0 0 4px rgba(51,153,224,0.8)',
                   transition: 'width 0.25s linear',
                 }} />
               </div>
             </div>
-            <p style={{ marginTop: 10, fontSize: 11, color: 'rgba(255,255,255,0.3)', lineHeight: 1.5, fontFamily: 'var(--font-inter)' }}>
+            <p style={{ marginTop: 8, fontSize: 10, color: 'rgba(255,255,255,0.25)', lineHeight: 1.5, fontFamily: 'var(--font-inter)' }}>
               Precision fleet intelligence — deployed across Nigeria
             </p>
           </div>
@@ -302,16 +300,16 @@ export function PatternD({ config, isOpen }: Props) {
       {/* ── Footer CTA ────────────────────────────────────────────────── */}
       <div style={{
         borderTop: '1px solid rgba(255,255,255,0.06)',
-        padding: '12px 32px',
+        padding: '9px 24px',
         display: 'flex', alignItems: 'center', gap: 6,
       }}>
-        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-inter)' }}>
+        <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-inter)' }}>
           {config.footerCta.text}
         </span>
         <Link
           href={config.footerCta.href}
           style={{
-            fontSize: 12, fontWeight: 600, color: '#3399E0',
+            fontSize: 11, fontWeight: 600, color: '#3399E0',
             textDecoration: 'none', fontFamily: 'var(--font-inter)',
             transition: 'color 0.15s', whiteSpace: 'nowrap',
           }}
