@@ -1,43 +1,113 @@
-import { SectionLabel } from '@/components/ui/SectionLabel'
+'use client'
+
+import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
+import { SectionLabel } from '@/components/ui/SectionLabel'
+import { CtaBand } from '@/components/home/CtaBand'
 import { CLIENTS_TRACK_1, CLIENTS_TRACK_2, TESTIMONIALS } from '@/lib/content'
 
-export const metadata = {
-  title: 'Clients — Best Practices Limited',
-  description: 'Trusted by Shell, TotalEnergies, DHL, Lafarge, Baker Hughes and 150+ enterprise fleets in Nigeria.',
-}
+const ALL_CLIENTS = [...CLIENTS_TRACK_1, ...CLIENTS_TRACK_2]
+
+const fade = (delay = 0) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
+})
 
 export default function ClientsPage() {
-  const allClients = [...CLIENTS_TRACK_1, ...CLIENTS_TRACK_2]
-
   return (
-    <div className="bg-white">
-      <section className="bg-bpl-navy px-14 py-[96px]">
-        <div className="max-w-site mx-auto">
-          <SectionLabel light>Our Clients</SectionLabel>
-          <h1 className="font-display text-[52px] font-extrabold text-white tracking-[-0.03em] leading-[1.1] max-w-[700px] mt-3">
-            Trusted by 150+ enterprise fleets
-          </h1>
-          <p className="text-[16px] text-white/60 mt-5 max-w-[520px]">
-            From oil majors to logistics companies — Nigeria&apos;s most demanding fleets run on BPL.
-          </p>
+    <div style={{ background: '#040C18' }}>
+
+      {/* ── Hero ── */}
+      <section
+        className="relative px-8 md:px-14 xl:px-20 py-28 md:py-36 overflow-hidden"
+        style={{ background: 'linear-gradient(160deg, #040C18 0%, #071526 60%, #040F1E 100%)' }}
+      >
+        <div className="absolute -top-24 right-0 w-[600px] h-[600px] pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,80,200,0.12) 0%, transparent 70%)' }} />
+
+        <div className="max-w-site mx-auto relative">
+          <motion.div {...fade(0.1)}>
+            <SectionLabel light>Our Clients</SectionLabel>
+          </motion.div>
+
+          <motion.h1
+            {...fade(0.2)}
+            className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[680px]"
+            style={{ fontSize: 'clamp(36px, 4.5vw, 62px)' }}
+          >
+            Trusted by{' '}
+            <span style={{
+              backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
+              WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+            }}>
+              150+ enterprise fleets
+            </span>
+          </motion.h1>
+
+          <motion.p
+            {...fade(0.32)}
+            className="text-[16px] leading-[1.78] max-w-[520px] mt-6"
+            style={{ color: 'rgba(255,255,255,0.5)' }}
+          >
+            From oil majors and FMCG giants to logistics companies — Nigeria&apos;s most demanding fleets run on BPL.
+          </motion.p>
         </div>
       </section>
 
-      {/* Client grid */}
-      <section className="px-14 py-[96px]">
+      {/* ── Logo grid ── */}
+      <section className="px-8 md:px-14 xl:px-20 py-20" style={{ background: '#040C18' }}>
         <div className="max-w-site mx-auto">
-          <div className="grid grid-cols-4 gap-4">
-            {allClients.map((client, i) => (
-              <RevealWrapper key={client.name} delay={i * 0.04}>
-                <div className="flex items-center gap-3 px-5 py-4 bg-bpl-off-white border border-bpl-light-gray rounded-xl group hover:border-bpl-blue hover:bg-bpl-blue-pale transition-all duration-200">
-                  <span
-                    className="w-10 h-10 rounded-[8px] flex items-center justify-center text-[13px] font-extrabold flex-shrink-0"
-                    style={{ backgroundColor: client.color, color: client.textColor ?? '#fff' }}
-                  >
-                    {client.initials}
-                  </span>
-                  <span className="text-[14px] font-medium text-bpl-body group-hover:text-bpl-blue transition-colors">
+          <RevealWrapper>
+            <SectionLabel light>Who We Work With</SectionLabel>
+            <h2 className="font-display font-bold text-white text-[24px] tracking-tight mt-2 mb-12">
+              Industry leaders who trust BPL
+            </h2>
+          </RevealWrapper>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {ALL_CLIENTS.map((client, i) => (
+              <RevealWrapper key={client.name} delay={i * 0.05}>
+                <div
+                  className="group flex flex-col items-center justify-center gap-3 rounded-2xl p-6 transition-all duration-200"
+                  style={{
+                    background: 'rgba(255,255,255,0.035)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    minHeight: 110,
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLElement
+                    el.style.background = 'rgba(255,255,255,0.06)'
+                    el.style.borderColor = 'rgba(51,153,224,0.25)'
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLElement
+                    el.style.background = 'rgba(255,255,255,0.035)'
+                    el.style.borderColor = 'rgba(255,255,255,0.08)'
+                  }}
+                >
+                  {client.logo ? (
+                    <div style={{ width: '100%', height: 48, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Image
+                        src={client.logo}
+                        alt={client.name}
+                        fill
+                        style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.75 }}
+                      />
+                    </div>
+                  ) : (
+                    <span
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-[13px] font-extrabold flex-shrink-0"
+                      style={{ backgroundColor: client.color, color: client.textColor ?? '#fff' }}
+                    >
+                      {client.initials}
+                    </span>
+                  )}
+                  <span style={{
+                    fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)',
+                    fontFamily: 'var(--font-inter)', textAlign: 'center', lineHeight: 1.3,
+                  }}>
                     {client.name}
                   </span>
                 </div>
@@ -47,22 +117,28 @@ export default function ClientsPage() {
         </div>
       </section>
 
-      {/* Testimonial */}
-      <section className="bg-bpl-navy px-14 py-[96px]">
-        <div className="max-w-site mx-auto max-w-[760px]">
+      {/* ── Testimonial ── */}
+      <section className="px-8 md:px-14 xl:px-20 py-20" style={{ background: '#040C18' }}>
+        <div className="max-w-[760px] mx-auto">
+          <div style={{ height: 1, background: 'rgba(255,255,255,0.07)', marginBottom: 56 }} />
           {TESTIMONIALS.map((t) => (
             <RevealWrapper key={t.name}>
-              <blockquote className="text-[22px] font-light italic text-white/88 leading-[1.68] mb-7">
+              <blockquote
+                className="font-display font-light italic text-white leading-[1.7] mb-8"
+                style={{ fontSize: 'clamp(18px, 2.2vw, 24px)', color: 'rgba(255,255,255,0.85)' }}
+              >
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
-              <div className="text-[12px] font-semibold tracking-[0.08em] uppercase text-bpl-blue-light mb-1">
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#3399E0', marginBottom: 4, fontFamily: 'var(--font-inter)' }}>
                 — {t.name}
               </div>
-              <div className="text-[13px] text-white/50">{t.role}</div>
+              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', fontFamily: 'var(--font-inter)' }}>{t.role}</div>
             </RevealWrapper>
           ))}
         </div>
       </section>
+
+      <CtaBand />
     </div>
   )
 }
