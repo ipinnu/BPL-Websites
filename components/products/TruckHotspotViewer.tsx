@@ -229,7 +229,7 @@ function TruckScene({
           <Html
             key={product.slug}
             position={product.position}
-            zIndexRange={[50, 60]}
+            zIndexRange={[10, 20]}
           >
             <HotspotMarker
               product={product}
