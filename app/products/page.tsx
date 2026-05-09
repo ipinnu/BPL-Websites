@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button'
 import { CtaBand } from '@/components/home/CtaBand'
 import { PRODUCTS } from '@/lib/content'
 import { ProductModal } from '@/components/products/ProductModal'
-import { HOTSPOT_PRODUCTS } from '@/components/products/TruckHotspotViewer'
+import { HOTSPOT_PRODUCTS } from '@/lib/hotspot-products'
 import type { ModalProduct } from '@/components/products/ProductModal'
 
 // Dynamic import — no SSR for WebGL
