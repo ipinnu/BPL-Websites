@@ -80,11 +80,11 @@ export default function ProductsPage() {
           background: 'radial-gradient(circle, rgba(0,80,200,0.14) 0%, transparent 70%)',
         }} />
 
-        <div className="relative w-full max-w-site mx-auto px-6 md:px-14 xl:px-20 py-24 md:py-0">
+        <div className="relative w-full py-24 md:py-0">
           <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-0" style={{ minHeight: '80vh' }}>
 
-            {/* ── Left: intro text (45%) ── */}
-            <div className="lg:w-[45%] flex flex-col justify-center">
+            {/* ── Left: intro text ── */}
+            <div className="lg:w-[42%] lg:max-w-[580px] flex flex-col justify-center px-6 md:px-14 xl:px-20 lg:pl-[max(24px,calc((100vw-1200px)/2+80px))]">
               <motion.div {...fade(0.1)}>
                 <SectionLabel light>Our Products</SectionLabel>
               </motion.div>
@@ -145,9 +145,9 @@ export default function ProductsPage() {
               </motion.p>
             </div>
 
-            {/* ── Right: 3D truck (55%) — desktop only ── */}
+            {/* ── Right: 3D truck — extends to viewport right edge ── */}
             <div
-              className="hidden lg:block lg:w-[55%]"
+              className="hidden lg:block lg:flex-1"
               style={{ height: '75vh', position: 'relative' }}
             >
               {isDesktop && (
