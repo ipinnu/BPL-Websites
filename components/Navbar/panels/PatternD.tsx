@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -122,14 +122,18 @@ interface Props {
 export function PatternD({ config, isOpen, onClose }: Props) {
   const videoRef    = useRef<HTMLVideoElement>(null)
   const progressRef = useRef<HTMLDivElement>(null)
+  const [videoReady, setVideoReady] = useState(false)
 
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
     if (isOpen) {
+      video.currentTime = 2
       video.play().catch(() => {})
     } else {
       video.pause()
+      video.currentTime = 2
+      setVideoReady(false)
     }
   }, [isOpen])
 
@@ -277,7 +281,7 @@ export function PatternD({ config, isOpen, onClose }: Props) {
 
         {/* ── Right: Video ──────────────────────────────────────────── */}
         {config.videoSrc && (
-          <div style={{ width: 240, flexShrink: 0, padding: '20px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ width: 180, flexShrink: 0, padding: '20px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{
               borderRadius: 10, overflow: 'hidden', position: 'relative',
               aspectRatio: '16/9',
@@ -286,9 +290,28 @@ export function PatternD({ config, isOpen, onClose }: Props) {
               <video
                 ref={videoRef}
                 src={config.videoSrc}
-                muted loop playsInline preload="auto"
+                muted loop playsInline preload="none"
+                onCanPlay={() => setVideoReady(true)}
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
               />
+
+              {/* Logo placeholder — fades out once video is ready */}
+              <div style={{
+                position: 'absolute', inset: 0, zIndex: 4,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'linear-gradient(135deg, #040C18 0%, #081E36 100%)',
+                opacity: videoReady ? 0 : 1,
+                transition: 'opacity 0.5s ease',
+                pointerEvents: 'none',
+              }}>
+                <Image
+                  src="/images/logo/BPL_LOGO.png"
+                  alt="BPL"
+                  width={48}
+                  height={48}
+                  style={{ width: 48, height: 48, objectFit: 'contain', opacity: 0.35 }}
+                />
+              </div>
               <div style={{
                 position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%',
                 background: 'linear-gradient(to top, rgba(4,12,24,0.7) 0%, transparent 100%)',
