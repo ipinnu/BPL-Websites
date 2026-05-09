@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -45,6 +45,15 @@ const fade = (delay = 0) => ({
 export default function ProductsPage() {
   const [activeProduct, setActiveProduct] = useState<ModalProduct | null>(null)
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null)
+  const [isDesktop, setIsDesktop] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    setIsDesktop(mq.matches)
+    const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
 
   const handleSelectProduct = (product: ModalProduct) => setActiveProduct(product)
   const handleClose = () => setActiveProduct(null)
@@ -136,15 +145,17 @@ export default function ProductsPage() {
               </motion.p>
             </div>
 
-            {/* ── Right: 3D truck (55%) ── */}
+            {/* ── Right: 3D truck (55%) — desktop only ── */}
             <div
               className="hidden lg:block lg:w-[55%]"
               style={{ height: '75vh', position: 'relative' }}
             >
-              <TruckHotspotViewer
-                onSelectProduct={handleSelectProduct}
-                activeSlug={hoveredSlug ?? activeProduct?.slug ?? null}
-              />
+              {isDesktop && (
+                <TruckHotspotViewer
+                  onSelectProduct={handleSelectProduct}
+                  activeSlug={hoveredSlug ?? activeProduct?.slug ?? null}
+                />
+              )}
 
               {/* Scroll hint */}
               <motion.div
