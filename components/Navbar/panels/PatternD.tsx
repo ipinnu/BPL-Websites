@@ -127,11 +127,9 @@ export function PatternD({ config, isOpen, onClose }: Props) {
     const video = videoRef.current
     if (!video) return
     if (isOpen) {
-      video.currentTime = 2
       video.play().catch(() => {})
     } else {
       video.pause()
-      video.currentTime = 2
     }
   }, [isOpen])
 
@@ -279,7 +277,7 @@ export function PatternD({ config, isOpen, onClose }: Props) {
 
         {/* ── Right: Video ──────────────────────────────────────────── */}
         {config.videoSrc && (
-          <div style={{ width: 180, flexShrink: 0, padding: '20px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ width: 240, flexShrink: 0, padding: '20px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{
               borderRadius: 10, overflow: 'hidden', position: 'relative',
               aspectRatio: '16/9',
@@ -288,7 +286,7 @@ export function PatternD({ config, isOpen, onClose }: Props) {
               <video
                 ref={videoRef}
                 src={config.videoSrc}
-                muted loop playsInline preload="none"
+                muted loop playsInline preload="auto"
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
               />
               <div style={{
