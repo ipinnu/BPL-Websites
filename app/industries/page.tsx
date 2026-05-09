@@ -1,16 +1,9 @@
-'use client'
-import { motion } from 'framer-motion'
+import { FadeIn } from '@/components/ui/FadeIn'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
 import { CtaBand } from '@/components/home/CtaBand'
 import { Flame, Truck, HardHat, Navigation } from 'lucide-react'
-
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const },
-})
 
 const INDUSTRIES = [
   {
@@ -64,36 +57,37 @@ export default function IndustriesPage() {
           style={{ background: 'radial-gradient(circle, rgba(0,80,200,0.13) 0%, transparent 70%)' }} />
 
         <div className="max-w-site mx-auto relative">
-          <motion.div {...fade(0.1)}>
+          <FadeIn delay={0.1}>
             <SectionLabel light>Industries Served</SectionLabel>
-          </motion.div>
+          </FadeIn>
 
-          <motion.h1
-            {...fade(0.2)}
-            className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[700px]"
-            style={{ fontSize: 'clamp(32px, 4.5vw, 62px)' }}
-          >
-            Built for Nigeria&apos;s{' '}
-            <span style={{
-              backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-            }}>
-              most demanding sectors
-            </span>
-          </motion.h1>
+          <FadeIn delay={0.2}>
+            <h1
+              className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[700px]"
+              style={{ fontSize: 'clamp(32px, 4.5vw, 62px)' }}
+            >
+              Built for Nigeria&apos;s{' '}
+              <span style={{
+                backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+              }}>
+                most demanding sectors
+              </span>
+            </h1>
+          </FadeIn>
 
-          <motion.p
-            {...fade(0.32)}
-            className="text-[15px] md:text-[16px] leading-[1.78] max-w-[520px] mt-5"
-            style={{ color: 'rgba(255,255,255,0.55)' }}
-          >
-            From oil fields to construction sites — BPL fleet solutions are deployed across Nigeria&apos;s toughest operating environments.
-          </motion.p>
+          <FadeIn delay={0.32}>
+            <p
+              className="text-[15px] md:text-[16px] leading-[1.78] max-w-[520px] mt-5"
+              style={{ color: 'rgba(255,255,255,0.55)' }}
+            >
+              From oil fields to construction sites — BPL fleet solutions are deployed across Nigeria&apos;s toughest operating environments.
+            </p>
+          </FadeIn>
 
-          {/* Industry pills */}
-          <motion.div {...fade(0.44)} className="flex flex-wrap gap-2.5 mt-8">
+          <FadeIn delay={0.44} className="flex flex-wrap gap-2.5 mt-8">
             {INDUSTRIES.map(ind => (
               <span
                 key={ind.name}
@@ -107,7 +101,7 @@ export default function IndustriesPage() {
                 {ind.name}
               </span>
             ))}
-          </motion.div>
+          </FadeIn>
         </div>
       </section>
 
@@ -124,13 +118,11 @@ export default function IndustriesPage() {
                     border: '1px solid rgba(255,255,255,0.07)',
                   }}
                 >
-                  {/* Hover glow */}
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                     style={{ background: `radial-gradient(ellipse 70% 50% at 50% 0%, ${ind.color}10 0%, transparent 70%)` }}
                   />
 
-                  {/* Icon + name */}
                   <div className="flex items-start gap-4 mb-6">
                     <div
                       className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -148,13 +140,11 @@ export default function IndustriesPage() {
                     </div>
                   </div>
 
-                  {/* Description */}
                   <p className="text-[14px] md:text-[14.5px] leading-[1.72] flex-1"
                     style={{ color: 'rgba(255,255,255,0.55)' }}>
                     {ind.description}
                   </p>
 
-                  {/* Stats row */}
                   <div className="flex gap-6 mt-6 pb-6" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     {ind.stats.map(s => (
                       <div key={s.label}>
@@ -172,7 +162,6 @@ export default function IndustriesPage() {
                     ))}
                   </div>
 
-                  {/* Clients */}
                   <div className="mt-5">
                     <p className="text-[10.5px] font-semibold tracking-[0.1em] uppercase mb-2.5"
                       style={{ color: 'rgba(255,255,255,0.25)' }}>
@@ -199,7 +188,6 @@ export default function IndustriesPage() {
             ))}
           </div>
 
-          {/* CTA */}
           <RevealWrapper delay={0.2}>
             <div className="mt-12 text-center">
               <Button href="/contact" variant="primary">Discuss your industry needs →</Button>

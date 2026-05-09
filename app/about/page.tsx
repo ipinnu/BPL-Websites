@@ -1,18 +1,11 @@
-'use client'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { FadeIn } from '@/components/ui/FadeIn'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { StatsBand } from '@/components/home/StatsBand'
 import { CtaBand } from '@/components/home/CtaBand'
 import { Button } from '@/components/ui/Button'
-import { ABOUT, STATS } from '@/lib/content'
-
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const },
-})
+import { ABOUT } from '@/lib/content'
 
 export default function AboutPage() {
   return (
@@ -23,43 +16,44 @@ export default function AboutPage() {
         className="relative px-8 md:px-14 xl:px-20 py-28 md:py-36 overflow-hidden"
         style={{ background: 'linear-gradient(160deg, #040C18 0%, #071526 60%, #040F1E 100%)' }}
       >
-        {/* Radial glow */}
         <div className="absolute -top-24 right-0 w-[600px] h-[600px] pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(0,80,200,0.14) 0%, transparent 70%)' }} />
 
         <div className="max-w-site mx-auto relative">
-          <motion.div {...fade(0.1)}>
+          <FadeIn delay={0.1}>
             <SectionLabel light>Who We Are</SectionLabel>
-          </motion.div>
+          </FadeIn>
 
-          <motion.h1
-            {...fade(0.2)}
-            className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[720px]"
-            style={{ fontSize: 'clamp(36px, 4.5vw, 62px)' }}
-          >
-            Nigeria&apos;s Fleet Intelligence{' '}
-            <span style={{
-              backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-            }}>
-              Pioneer Since {ABOUT.year}
-            </span>
-          </motion.h1>
+          <FadeIn delay={0.2}>
+            <h1
+              className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[720px]"
+              style={{ fontSize: 'clamp(36px, 4.5vw, 62px)' }}
+            >
+              Nigeria&apos;s Fleet Intelligence{' '}
+              <span style={{
+                backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+              }}>
+                Pioneer Since {ABOUT.year}
+              </span>
+            </h1>
+          </FadeIn>
 
-          <motion.p
-            {...fade(0.32)}
-            className="text-[16px] leading-[1.78] max-w-[560px] mt-6"
-            style={{ color: 'rgba(255,255,255,0.55)' }}
-          >
-            From Lagos to every state in Nigeria — Best Practices Limited has spent over two decades building safer, smarter, more efficient fleets for the country&apos;s most demanding enterprises.
-          </motion.p>
+          <FadeIn delay={0.32}>
+            <p
+              className="text-[16px] leading-[1.78] max-w-[560px] mt-6"
+              style={{ color: 'rgba(255,255,255,0.55)' }}
+            >
+              From Lagos to every state in Nigeria — Best Practices Limited has spent over two decades building safer, smarter, more efficient fleets for the country&apos;s most demanding enterprises.
+            </p>
+          </FadeIn>
 
-          <motion.div {...fade(0.44)} className="mt-8 flex gap-3">
+          <FadeIn delay={0.44} className="mt-8 flex gap-3">
             <Button href="/solutions" variant="primary">Our Solutions</Button>
             <Button href="/contact" variant="ghost">Get in Touch</Button>
-          </motion.div>
+          </FadeIn>
         </div>
       </section>
 
@@ -84,7 +78,6 @@ export default function AboutPage() {
             <p className="text-[14.5px] text-bpl-body leading-relaxed mb-4">{ABOUT.storyP1}</p>
             <p className="text-[14.5px] text-bpl-body leading-relaxed">{ABOUT.storyP2}</p>
 
-            {/* Gallery */}
             <div className="grid grid-cols-2 gap-3 mt-8">
               <div className="relative h-36 rounded-xl overflow-hidden">
                 <Image src="/images/gallery/gallery-01.jpg" alt="BPL partnership" fill className="object-cover" />
@@ -94,7 +87,6 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* Partner badges */}
             <div className="flex flex-wrap gap-3 mt-7">
               <span className="inline-flex items-center gap-2 text-[12px] font-semibold text-bpl-body bg-white border border-bpl-light-gray px-4 py-2 rounded-lg">
                 <span className="w-2 h-2 rounded-full bg-bpl-blue" />
@@ -219,44 +211,20 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              {
-                letter: 'C',
-                title: 'Cost Reduction',
-                desc: 'Eliminating fuel waste, reducing maintenance costs, and cutting idle time — we make every naira in your fleet budget work harder.',
-                color: '#3399E0',
-                glow: 'rgba(0,102,204,0.2)',
-              },
-              {
-                letter: 'E',
-                title: 'Efficiency',
-                desc: 'Real-time visibility, optimised routes, and data-driven dispatch — we remove friction from every mile your fleet covers.',
-                color: '#60A5FA',
-                glow: 'rgba(96,165,250,0.2)',
-              },
-              {
-                letter: 'S',
-                title: 'Safety',
-                desc: 'Speed limiting, driver monitoring, incident alerts, and training — because every driver deserves to come home safely.',
-                color: '#4ADE80',
-                glow: 'rgba(74,222,128,0.15)',
-              },
+              { letter: 'C', title: 'Cost Reduction', desc: 'Eliminating fuel waste, reducing maintenance costs, and cutting idle time — we make every naira in your fleet budget work harder.', color: '#3399E0', glow: 'rgba(0,102,204,0.2)' },
+              { letter: 'E', title: 'Efficiency', desc: 'Real-time visibility, optimised routes, and data-driven dispatch — we remove friction from every mile your fleet covers.', color: '#60A5FA', glow: 'rgba(96,165,250,0.2)' },
+              { letter: 'S', title: 'Safety', desc: 'Speed limiting, driver monitoring, incident alerts, and training — because every driver deserves to come home safely.', color: '#4ADE80', glow: 'rgba(74,222,128,0.15)' },
             ].map((item, i) => (
               <RevealWrapper key={item.letter} delay={i * 0.12}>
                 <div
                   className="relative rounded-2xl p-8 overflow-hidden h-full"
-                  style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.07)',
-                  }}
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
                 >
                   <div
                     className="absolute -top-8 -right-8 w-32 h-32 pointer-events-none rounded-full"
                     style={{ background: `radial-gradient(circle, ${item.glow} 0%, transparent 70%)` }}
                   />
-                  <div
-                    className="font-display font-extrabold text-[56px] leading-none tracking-[-0.04em] mb-5"
-                    style={{ color: item.color, opacity: 0.18 }}
-                  >
+                  <div className="font-display font-extrabold text-[56px] leading-none tracking-[-0.04em] mb-5" style={{ color: item.color, opacity: 0.18 }}>
                     {item.letter}
                   </div>
                   <div className="text-[11px] font-semibold tracking-[0.1em] uppercase mb-2" style={{ color: item.color }}>
@@ -273,10 +241,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── THIS Values ── */}
-      <section
-        className="px-8 md:px-14 xl:px-20 py-24 md:py-32"
-        style={{ background: '#F5F7FA' }}
-      >
+      <section className="px-8 md:px-14 xl:px-20 py-24 md:py-32" style={{ background: '#F5F7FA' }}>
         <div className="max-w-site mx-auto">
           <RevealWrapper>
             <SectionLabel>Our Values</SectionLabel>
@@ -295,10 +260,7 @@ export default function AboutPage() {
             {ABOUT.values.map((v, i) => (
               <RevealWrapper key={v.letter} delay={i * 0.1}>
                 <div className="bg-white rounded-2xl p-7 border border-bpl-light-gray h-full">
-                  <div
-                    className="font-display font-extrabold text-[56px] leading-none tracking-[-0.04em] mb-5"
-                    style={{ color: 'rgba(0,102,204,0.1)' }}
-                  >
+                  <div className="font-display font-extrabold text-[56px] leading-none tracking-[-0.04em] mb-5" style={{ color: 'rgba(0,102,204,0.1)' }}>
                     {v.letter}
                   </div>
                   <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-bpl-blue mb-2">{v.word}</div>
@@ -321,9 +283,9 @@ export default function AboutPage() {
           </RevealWrapper>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-            { f: 'gallery-02.jpg' }, { f: 'gallery-03.jpg' }, { f: 'gallery-04.jpg' }, { f: 'gallery-05.jpg' },
-            { f: 'gallery-06.jpg' }, { f: 'gallery-07.jpg' }, { f: 'gallery-08.jpg' }, { f: 'gallery-10.jpeg' },
-          ].map(({ f }, i) => (
+              { f: 'gallery-02.jpg' }, { f: 'gallery-03.jpg' }, { f: 'gallery-04.jpg' }, { f: 'gallery-05.jpg' },
+              { f: 'gallery-06.jpg' }, { f: 'gallery-07.jpg' }, { f: 'gallery-08.jpg' }, { f: 'gallery-10.jpeg' },
+            ].map(({ f }, i) => (
               <RevealWrapper key={f} delay={i * 0.05}>
                 <div className="relative rounded-xl overflow-hidden" style={{ aspectRatio: '4/3' }}>
                   <Image
@@ -361,25 +323,12 @@ export default function AboutPage() {
               <RevealWrapper key={member.name} delay={i * 0.1}>
                 <div
                   className="rounded-2xl overflow-hidden"
-                  style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.07)',
-                  }}
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
                 >
-                  {/* Photo */}
                   <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
-                    <Image
-                      src={member.photo}
-                      alt={member.name}
-                      fill
-                      className="object-cover object-top"
-                    />
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: 'linear-gradient(to top, rgba(7,21,38,0.7) 0%, transparent 55%)' }}
-                    />
+                    <Image src={member.photo} alt={member.name} fill className="object-cover object-top" />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(7,21,38,0.7) 0%, transparent 55%)' }} />
                   </div>
-                  {/* Info */}
                   <div className="px-6 py-5">
                     <div className="text-[16px] font-semibold text-white leading-snug mb-1">{member.name}</div>
                     <div className="text-[11px] font-semibold tracking-[0.08em] uppercase" style={{ color: 'rgba(51,153,224,0.7)' }}>
@@ -394,10 +343,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Awards ── */}
-      <section
-        className="px-8 md:px-14 xl:px-20 pb-24 pt-0"
-        style={{ background: '#071526' }}
-      >
+      <section className="px-8 md:px-14 xl:px-20 pb-24 pt-0" style={{ background: '#071526' }}>
         <div className="max-w-site mx-auto">
           <RevealWrapper>
             <SectionLabel light>Recognition</SectionLabel>
@@ -414,10 +360,7 @@ export default function AboutPage() {
               <RevealWrapper key={award.year + award.title} delay={i * 0.12}>
                 <div
                   className="rounded-2xl p-7 flex gap-6 items-start"
-                  style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.07)',
-                  }}
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}
                 >
                   <div
                     className="font-display font-extrabold text-[32px] leading-none tracking-[-0.04em] flex-shrink-0 pt-0.5"

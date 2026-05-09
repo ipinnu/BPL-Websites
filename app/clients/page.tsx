@@ -1,19 +1,11 @@
-'use client'
-
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { FadeIn } from '@/components/ui/FadeIn'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { CtaBand } from '@/components/home/CtaBand'
 import { CLIENTS_TRACK_1, CLIENTS_TRACK_2, TESTIMONIALS } from '@/lib/content'
 
 const ALL_CLIENTS = [...CLIENTS_TRACK_1, ...CLIENTS_TRACK_2]
-
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] as const },
-})
 
 export default function ClientsPage() {
   return (
@@ -28,31 +20,33 @@ export default function ClientsPage() {
           style={{ background: 'radial-gradient(circle, rgba(0,80,200,0.12) 0%, transparent 70%)' }} />
 
         <div className="max-w-site mx-auto relative">
-          <motion.div {...fade(0.1)}>
+          <FadeIn delay={0.1}>
             <SectionLabel light>Our Clients</SectionLabel>
-          </motion.div>
+          </FadeIn>
 
-          <motion.h1
-            {...fade(0.2)}
-            className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[680px]"
-            style={{ fontSize: 'clamp(36px, 4.5vw, 62px)' }}
-          >
-            Trusted by{' '}
-            <span style={{
-              backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
-              WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
-            }}>
-              150+ enterprise fleets
-            </span>
-          </motion.h1>
+          <FadeIn delay={0.2}>
+            <h1
+              className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[680px]"
+              style={{ fontSize: 'clamp(36px, 4.5vw, 62px)' }}
+            >
+              Trusted by{' '}
+              <span style={{
+                backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
+                WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+              }}>
+                150+ enterprise fleets
+              </span>
+            </h1>
+          </FadeIn>
 
-          <motion.p
-            {...fade(0.32)}
-            className="text-[16px] leading-[1.78] max-w-[520px] mt-6"
-            style={{ color: 'rgba(255,255,255,0.5)' }}
-          >
-            From oil majors and FMCG giants to logistics companies — Nigeria&apos;s most demanding fleets run on BPL.
-          </motion.p>
+          <FadeIn delay={0.32}>
+            <p
+              className="text-[16px] leading-[1.78] max-w-[520px] mt-6"
+              style={{ color: 'rgba(255,255,255,0.5)' }}
+            >
+              From oil majors and FMCG giants to logistics companies — Nigeria&apos;s most demanding fleets run on BPL.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
@@ -70,22 +64,8 @@ export default function ClientsPage() {
             {ALL_CLIENTS.map((client, i) => (
               <RevealWrapper key={client.name} delay={i * 0.05}>
                 <div
-                  className="group flex flex-col items-center justify-center gap-3 rounded-2xl p-6 transition-all duration-200"
-                  style={{
-                    background: 'rgba(255,255,255,0.07)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    minHeight: 110,
-                  }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget as HTMLElement
-                    el.style.background = 'rgba(255,255,255,0.06)'
-                    el.style.borderColor = 'rgba(51,153,224,0.25)'
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget as HTMLElement
-                    el.style.background = 'rgba(255,255,255,0.07)'
-                    el.style.borderColor = 'rgba(255,255,255,0.08)'
-                  }}
+                  className="client-card group flex flex-col items-center justify-center gap-3 rounded-2xl p-6"
+                  style={{ minHeight: 110 }}
                 >
                   {client.logo ? (
                     <div style={{ width: '100%', height: 48, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

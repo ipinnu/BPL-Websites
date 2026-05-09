@@ -1,5 +1,4 @@
-'use client'
-import { motion } from 'framer-motion'
+import { FadeIn } from '@/components/ui/FadeIn'
 import { RevealWrapper } from '@/components/ui/RevealWrapper'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { Button } from '@/components/ui/Button'
@@ -10,12 +9,6 @@ import { MapPin, Wrench, Users, Gauge, BarChart3, Package, LucideIcon } from 'lu
 const ICON_MAP: Record<string, LucideIcon> = {
   MapPin, Wrench, Users, Gauge, BarChart3, Package,
 }
-
-const fade = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const },
-})
 
 const ACCENT_COLORS = ['#3399E0', '#60A5FA', '#4ADE80', '#A78BFA', '#F59E0B', '#EF4444']
 
@@ -34,36 +27,37 @@ export default function SolutionsPage() {
           style={{ background: 'radial-gradient(circle, rgba(0,50,160,0.1) 0%, transparent 70%)' }} />
 
         <div className="max-w-site mx-auto relative">
-          <motion.div {...fade(0.1)}>
+          <FadeIn delay={0.1}>
             <SectionLabel light>What We Do</SectionLabel>
-          </motion.div>
+          </FadeIn>
 
-          <motion.h1
-            {...fade(0.2)}
-            className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[700px]"
-            style={{ fontSize: 'clamp(36px, 4.5vw, 62px)' }}
-          >
-            Complete fleet solutions,{' '}
-            <span style={{
-              backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
-              WebkitBackgroundClip: 'text',
-              backgroundClip: 'text',
-              color: 'transparent',
-            }}>
-              built for Nigeria
-            </span>
-          </motion.h1>
+          <FadeIn delay={0.2}>
+            <h1
+              className="font-display font-extrabold leading-[1.06] tracking-[-0.03em] text-white mt-3 max-w-[700px]"
+              style={{ fontSize: 'clamp(36px, 4.5vw, 62px)' }}
+            >
+              Complete fleet solutions,{' '}
+              <span style={{
+                backgroundImage: 'linear-gradient(90deg, #0066CC 0%, #3399E0 60%, #60A5FA 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                color: 'transparent',
+              }}>
+                built for Nigeria
+              </span>
+            </h1>
+          </FadeIn>
 
-          <motion.p
-            {...fade(0.32)}
-            className="text-[16px] leading-[1.78] max-w-[520px] mt-6"
-            style={{ color: 'rgba(255,255,255,0.55)' }}
-          >
-            From real-time GPS tracking to driver training — every service built around Cost Reduction, Efficiency and Safety.
-          </motion.p>
+          <FadeIn delay={0.32}>
+            <p
+              className="text-[16px] leading-[1.78] max-w-[520px] mt-6"
+              style={{ color: 'rgba(255,255,255,0.55)' }}
+            >
+              From real-time GPS tracking to driver training — every service built around Cost Reduction, Efficiency and Safety.
+            </p>
+          </FadeIn>
 
-          {/* CES pills */}
-          <motion.div {...fade(0.44)} className="flex flex-wrap gap-2.5 mt-8">
+          <FadeIn delay={0.44} className="flex flex-wrap gap-2.5 mt-8">
             {['Cost Reduction', 'Efficiency', 'Safety'].map((p, i) => (
               <span
                 key={p}
@@ -77,7 +71,7 @@ export default function SolutionsPage() {
                 {p}
               </span>
             ))}
-          </motion.div>
+          </FadeIn>
         </div>
       </section>
 
@@ -108,13 +102,11 @@ export default function SolutionsPage() {
                       border: '1px solid rgba(255,255,255,0.07)',
                     }}
                   >
-                    {/* Hover glow */}
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                       style={{ background: `radial-gradient(ellipse 60% 50% at 50% 0%, ${color}12 0%, transparent 70%)` }}
                     />
 
-                    {/* Number + Icon row */}
                     <div className="flex items-start justify-between mb-6">
                       <div
                         className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -130,10 +122,7 @@ export default function SolutionsPage() {
                       </span>
                     </div>
 
-                    {/* Content */}
-                    <h3
-                      className="font-display font-bold text-white text-[19px] tracking-[-0.02em] leading-[1.3] mb-3"
-                    >
+                    <h3 className="font-display font-bold text-white text-[19px] tracking-[-0.02em] leading-[1.3] mb-3">
                       {svc.title}
                     </h3>
                     <p className="text-[14px] leading-[1.72] flex-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
@@ -181,7 +170,7 @@ export default function SolutionsPage() {
                   { stat: '6,000+', desc: 'IVMS devices installed and actively monitored nationwide' },
                   { stat: '5,032+', desc: 'Drivers and transport managers trained and certified' },
                   { stat: '1,000+', desc: 'Speed limiting devices deployed for safety compliance' },
-                ].map((item, i) => (
+                ].map((item) => (
                   <div
                     key={item.stat}
                     className="flex items-start gap-5 p-5 rounded-xl"
