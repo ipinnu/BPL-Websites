@@ -1,7 +1,7 @@
 'use client'
 
-import { Suspense, useRef, useState, useEffect, useCallback } from 'react'
-import { Canvas, useFrame, ThreeEvent } from '@react-three/fiber'
+import { Component, Suspense, useRef, useCallback, useState, useEffect } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
 import { useGLTF, Html, OrbitControls, Environment, ContactShadows } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import * as THREE from 'three'
@@ -22,7 +22,7 @@ const TAG_COLORS_HOTSPOT: Record<string, string> = {
   'Telematics':       '#EF4444',
 }
 
-// ─── Hotspot marker — diagram line style ──────────────────────────────────────
+// ─── Hotspot marker ───────────────────────────────────────────────────────────
 
 function HotspotMarker({
   product, isActive, isAnyActive, onClick, onClickPartner,
@@ -72,7 +72,7 @@ function HotspotMarker({
         transition: 'background 0.2s',
       }} />
 
-      {/* Label card — combined or single */}
+      {/* Label card */}
       {product.partner ? (
         <div style={{
           background: 'rgba(4,12,24,0.88)',
@@ -84,11 +84,9 @@ function HotspotMarker({
           flexDirection: 'column',
           gap: 5,
         }}>
-          {/* Compound label */}
           <div style={{ fontSize: 7.5, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', fontFamily: 'var(--font-inter)', marginBottom: 1 }}>
             Hardware Suite
           </div>
-          {/* Product A */}
           <div
             onClick={e => { e.stopPropagation(); onClick() }}
             style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
@@ -103,7 +101,6 @@ function HotspotMarker({
               </div>
             </div>
           </div>
-          {/* Product B */}
           <div
             onClick={e => { e.stopPropagation(); onClickPartner?.() }}
             style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer' }}
@@ -146,11 +143,10 @@ function HotspotMarker({
 // ─── Truck model + scene ──────────────────────────────────────────────────────
 
 function TruckScene({
-  onSelect, activeSlug, onDebugClick,
+  onSelect, activeSlug,
 }: {
   onSelect: (p: ModalProduct) => void
   activeSlug: string | null
-  onDebugClick?: (pos: [number, number, number]) => void
 }) {
   const { scene } = useGLTF(TRUCK_PATH)
   const groupRef = useRef<THREE.Group>(null)
@@ -158,7 +154,6 @@ function TruckScene({
   const isInteracting = useRef(false)
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
-  // Apply materials
   useEffect(() => {
     scene.traverse(obj => {
       if (!(obj instanceof THREE.Mesh)) return
@@ -195,7 +190,6 @@ function TruckScene({
     })
   }, [scene])
 
-  // Auto-rotate
   useFrame((_, delta) => {
     if (groupRef.current && !isInteracting.current) {
       groupRef.current.rotation.y += delta * 0.18
@@ -229,20 +223,7 @@ function TruckScene({
       />
 
       <group ref={groupRef}>
-        <primitive
-          object={scene}
-          onClick={(e: ThreeEvent<MouseEvent>) => {
-            e.stopPropagation()
-            if (onDebugClick && e.point) {
-              const p = e.point
-              onDebugClick([
-                Math.round(p.x * 100) / 100,
-                Math.round(p.y * 100) / 100,
-                Math.round(p.z * 100) / 100,
-              ])
-            }
-          }}
-        />
+        <primitive object={scene} />
 
         {HOTSPOT_PRODUCTS.map(product => (
           <Html
@@ -269,9 +250,9 @@ function TruckScene({
   )
 }
 
-useGLTF.preload('/truck%20(1).glb')
+useGLTF.preload(TRUCK_PATH)
 
-// ─── Loading fallback ─────────────────────────────────────────────────────────
+// ─── Loading spinner ──────────────────────────────────────────────────────────
 
 function LoadingSpinner() {
   return (
@@ -288,7 +269,21 @@ function LoadingSpinner() {
   )
 }
 
-// ─── Main export ─────────────────────────────────────────────────────────────
+// ─── Error boundary — prevents 3D crash from taking down the page ─────────────
+
+class TruckErrorBoundary extends Component<
+  { children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false }
+  static getDerivedStateFromError() { return { failed: true } }
+  render() {
+    if (this.state.failed) return null
+    return this.props.children
+  }
+}
+
+// ─── Main export ──────────────────────────────────────────────────────────────
 
 interface Props {
   onSelectProduct: (product: ModalProduct) => void
@@ -296,69 +291,36 @@ interface Props {
 }
 
 export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
-  const [debugPos, setDebugPos] = useState<[number, number, number] | null>(null)
-  const [debugMode, setDebugMode] = useState(false)
-
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-      {/* Debug toggle */}
-      <button
-        onClick={() => { setDebugMode(d => !d); setDebugPos(null) }}
-        style={{
-          position: 'absolute', top: 12, right: 12, zIndex: 20,
-          fontSize: 10, fontWeight: 700, letterSpacing: '0.08em',
-          padding: '4px 10px', borderRadius: 6,
-          background: debugMode ? 'rgba(239,68,68,0.2)' : 'rgba(255,255,255,0.06)',
-          border: `1px solid ${debugMode ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.12)'}`,
-          color: debugMode ? '#EF4444' : 'rgba(255,255,255,0.3)',
-          cursor: 'pointer', fontFamily: 'var(--font-inter)',
-        }}
-      >
-        {debugMode ? 'DEBUG ON' : 'DEBUG'}
-      </button>
+      <TruckErrorBoundary>
+        <Canvas
+          camera={{ position: [24, 9, 36], fov: 26 }}
+          shadows
+          gl={{ alpha: true, antialias: true }}
+          style={{ background: 'transparent' }}
+        >
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[5, 8, 5]} intensity={2.0} color="#ffffff" castShadow />
+          <pointLight position={[-5, 3, -5]} intensity={3.0} color="#4a9eff" />
+          <pointLight position={[0, -2, 4]} intensity={0.4} />
 
-      {/* Coordinate readout */}
-      {debugMode && (
-        <div style={{
-          position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)',
-          zIndex: 20, background: 'rgba(4,12,24,0.92)',
-          border: '1px solid rgba(51,153,224,0.4)', borderRadius: 8,
-          padding: '8px 16px', fontFamily: 'monospace', fontSize: 13,
-          color: '#60A5FA', whiteSpace: 'nowrap', backdropFilter: 'blur(8px)',
-        }}>
-          {debugPos
-            ? `position: [${debugPos[0]}, ${debugPos[1]}, ${debugPos[2]}]`
-            : 'Click any part of the truck to get its coordinates'}
-        </div>
-      )}
-
-      <Canvas
-        camera={{ position: [24, 9, 36], fov: 26 }}
-        shadows
-        gl={{ alpha: true, antialias: true }}
-        style={{ background: 'transparent' }}
-      >
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[5, 8, 5]} intensity={2.0} color="#ffffff" castShadow />
-        <pointLight position={[-5, 3, -5]} intensity={3.0} color="#4a9eff" />
-        <pointLight position={[0, -2, 4]} intensity={0.4} />
-
-        <Suspense fallback={null}>
-          <Environment preset="warehouse" />
-          <TruckScene
-            onSelect={onSelectProduct}
-            activeSlug={activeSlug}
-            onDebugClick={debugMode ? setDebugPos : undefined}
-          />
-          <ContactShadows
-            position={[0, -0.01, 0]}
-            opacity={0.4}
-            scale={12}
-            blur={2}
-            far={4}
-          />
-        </Suspense>
-      </Canvas>
+          <Suspense fallback={null}>
+            <Environment preset="warehouse" />
+            <TruckScene
+              onSelect={onSelectProduct}
+              activeSlug={activeSlug}
+            />
+            <ContactShadows
+              position={[0, -0.01, 0]}
+              opacity={0.4}
+              scale={12}
+              blur={2}
+              far={4}
+            />
+          </Suspense>
+        </Canvas>
+      </TruckErrorBoundary>
     </div>
   )
 }
