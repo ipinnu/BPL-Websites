@@ -104,7 +104,7 @@ export function Navbar() {
   const open  = (label: string) => {
     if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null }
     setOpenItem(label)
-    if (label === 'Solutions') videoRef.current?.play().catch(() => {})
+    if (label === 'Solutions' && videoRef.current) { videoRef.current.currentTime = 2; videoRef.current.play().catch(() => {}) }
   }
   const close = () => {
     closeTimer.current = setTimeout(() => {
