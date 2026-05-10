@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation'
 const NAV_ITEMS = [
   {
     label: 'Solutions',
-    videoSrc: '/videos/mix-vision.mp4',
+    videoSrc: '/videos/MiX Telematics _ Hardware _ MiX Vision new video.mp4',
     links: [
       { label: 'Fleet Management & Tracking',   href: '/solutions#tracking' },
       { label: 'Speed Limiting Devices',         href: '/solutions#speed' },
