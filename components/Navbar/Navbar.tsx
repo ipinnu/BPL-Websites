@@ -81,10 +81,14 @@ export function Navbar() {
 
   // Preload panel chunks in the background after hydration so they're ready on first hover
   useEffect(() => {
-    import('./panels/PatternA')
-    import('./panels/PatternB')
-    import('./panels/PatternC')
-    import('./panels/PatternD')
+    Promise.all([
+      import('./panels/PatternA'),
+      import('./panels/PatternB'),
+      import('./panels/PatternC'),
+      import('./panels/PatternD'),
+    ]).then(() => {
+      setMountedPanels(new Set(NAV_ITEMS.filter(i => i.config !== null).map(i => i.label)))
+    })
   }, [])
 
   // Close everything on route change
@@ -127,7 +131,6 @@ export function Navbar() {
       clearTimeout(closeTimer.current)
       closeTimer.current = null
     }
-    setMountedPanels(prev => prev.has(label) ? prev : new Set([...prev, label]))
     setOpenItem(label)
   }
 
@@ -258,10 +261,7 @@ export function Navbar() {
                           aria-expanded={isActive}
                           aria-haspopup="true"
                           onMouseEnter={() => handleItemEnter(item.label, true)}
-                          onClick={() => {
-                            setMountedPanels(prev => prev.has(item.label) ? prev : new Set([...prev, item.label]))
-                            setOpenItem(isActive ? null : item.label)
-                          }}
+                          onClick={() => setOpenItem(isActive ? null : item.label)}
                           style={{
                             display: 'flex',
                             alignItems: 'center',
