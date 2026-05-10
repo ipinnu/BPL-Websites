@@ -12,7 +12,7 @@ export const HOTSPOT_PRODUCTS: HotspotProduct[] = [
     tag: 'Video Telematics',
     description: '72-hour rolling video capture — in-cab and forward-facing — for incident context and full driver accountability.',
     specs: ['72-hour rolling video buffer', 'Forward-facing + in-cab cameras', 'AI-powered event detection & alerts'],
-    position: [0.5, 1.41, 6.42],
+    position: [0.5, 2.1, 6.42],
   },
   {
     slug: 'mix-rovi',
