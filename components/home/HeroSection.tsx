@@ -14,12 +14,17 @@ const fade = (delay = 0) => ({
 
 export function HeroSection() {
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-104px)]">
+    <section className="relative min-h-[calc(100vh-104px)] overflow-hidden">
 
-      {/* ── Left: Copy ── */}
+      {/* ── 3D canvas — full width background ── */}
+      <div className="absolute inset-0" style={{ background: '#030D1A' }}>
+        <FleetScene />
+      </div>
+
+      {/* ── Copy — sits on top, left half ── */}
       <div
-        className="flex flex-col justify-center px-8 md:px-14 xl:px-20 py-24 md:py-32 order-2 lg:order-1"
-        style={{ background: '#040C18' }}
+        className="relative z-10 flex flex-col justify-center px-8 md:px-14 xl:px-20 py-24 md:py-32 min-h-[calc(100vh-104px)] lg:w-[52%]"
+        style={{ background: 'linear-gradient(to right, #040C18 0%, #040C18 55%, rgba(4,12,24,0.7) 75%, rgba(4,12,24,0.2) 90%, transparent 100%)' }}
       >
         {/* Eyebrow */}
         <motion.div {...fade(0.1)} className="flex items-center gap-2.5 mb-8">
@@ -80,37 +85,11 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* ── Right: 3D Map panel ── */}
+      {/* Bottom vignette */}
       <div
-        className="relative min-h-[520px] order-1 lg:order-2 overflow-hidden"
-        style={{ background: '#030D1A' }}
-      >
-        <FleetScene />
-
-        {/* Left seam — matches dark left panel */}
-        <div
-          className="absolute inset-y-0 left-0 w-[50%] pointer-events-none z-10 hidden lg:block"
-          style={{ background: 'linear-gradient(to right, #040C18 0%, rgba(4,12,24,0.45) 8%, rgba(4,12,24,0.2) 25%, rgba(4,12,24,0.08) 60%, transparent 100%)' }}
-        />
-
-        {/* Right edge — very thin, just a clean finish */}
-        <div
-          className="absolute inset-y-0 right-0 w-6 pointer-events-none z-10"
-          style={{ background: 'linear-gradient(to left, #030D1A 0%, transparent 100%)' }}
-        />
-
-        {/* Bottom — map sinks into darkness */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-36 pointer-events-none z-10"
-          style={{ background: 'linear-gradient(to top, #030D1A 0%, transparent 100%)' }}
-        />
-
-        {/* Top vignette */}
-        <div
-          className="absolute inset-x-0 top-0 h-16 pointer-events-none z-10"
-          style={{ background: 'linear-gradient(to bottom, rgba(3,13,26,0.5) 0%, transparent 100%)' }}
-        />
-      </div>
+        className="absolute inset-x-0 bottom-0 h-36 pointer-events-none z-10"
+        style={{ background: 'linear-gradient(to top, #030D1A 0%, transparent 100%)' }}
+      />
     </section>
   )
 }
