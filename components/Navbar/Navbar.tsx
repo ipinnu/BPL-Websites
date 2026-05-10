@@ -10,6 +10,7 @@ import { usePathname } from 'next/navigation'
 const NAV_ITEMS = [
   {
     label: 'Solutions',
+    videoSrc: '/videos/mix-vision.mp4',
     links: [
       { label: 'Fleet Management & Tracking',   href: '/solutions#tracking' },
       { label: 'Speed Limiting Devices',         href: '/solutions#speed' },
@@ -40,6 +41,7 @@ const NAV_ITEMS = [
     links: [
       { label: 'Who We Are',        href: '/about' },
       { label: 'Our Story',         href: '/about#journey' },
+      { label: 'Blog & Insights',   href: '/resources/blog' },
       { label: 'Careers at BPL',    href: '/careers' },
     ],
   },
@@ -71,7 +73,8 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const pathname = usePathname()
+  const videoRef   = useRef<HTMLVideoElement>(null)
+  const pathname   = usePathname()
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10)
@@ -101,9 +104,13 @@ export function Navbar() {
   const open  = (label: string) => {
     if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null }
     setOpenItem(label)
+    if (label === 'Solutions') videoRef.current?.play().catch(() => {})
   }
   const close = () => {
-    closeTimer.current = setTimeout(() => setOpenItem(null), 80)
+    closeTimer.current = setTimeout(() => {
+      setOpenItem(null)
+      if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = 0 }
+    }, 80)
   }
   const cancelClose = () => {
     if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null }
@@ -238,7 +245,8 @@ export function Navbar() {
         <div className="hidden md:block">
           {NAV_ITEMS.filter(i => i.links).map((item) => {
             const isOpen = openItem === item.label
-            const cols = (item.links?.length ?? 0) > 4 ? 2 : 1
+            const hasVideo = 'videoSrc' in item && Boolean(item.videoSrc)
+            const cols = !hasVideo && (item.links?.length ?? 0) > 4 ? 2 : 1
 
             return (
               <div
@@ -255,40 +263,59 @@ export function Navbar() {
                   zIndex: 10,
                 }}
               >
-                <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 40px 24px' }}>
-                  <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase', color: 'rgba(51,153,224,0.5)', marginBottom: 14, fontFamily: 'var(--font-inter)' }}>
-                    {item.label}
-                  </p>
-                  <ul
-                    style={{
-                      listStyle: 'none', margin: 0, padding: 0,
-                      display: 'grid',
-                      gridTemplateColumns: cols === 2 ? '1fr 1fr' : '280px',
-                      gap: '2px 40px',
-                    }}
-                  >
-                    {item.links!.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          onClick={() => setOpenItem(null)}
-                          style={{
-                            display: 'flex', alignItems: 'center', gap: 8,
-                            padding: '7px 10px', borderRadius: 6,
-                            fontSize: 13.5, fontWeight: 500,
-                            color: 'rgba(255,255,255,0.6)', textDecoration: 'none',
-                            fontFamily: 'var(--font-inter)',
-                            transition: 'color 0.12s, background 0.12s',
-                          }}
-                          onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
-                          onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; e.currentTarget.style.background = 'transparent' }}
-                        >
-                          <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#3399E0', flexShrink: 0, opacity: 0.6 }} />
-                          {link.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 40px 24px', display: 'flex', gap: 32, alignItems: 'flex-start' }}>
+                  {/* Links */}
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase', color: 'rgba(51,153,224,0.5)', marginBottom: 14, fontFamily: 'var(--font-inter)' }}>
+                      {item.label}
+                    </p>
+                    <ul
+                      style={{
+                        listStyle: 'none', margin: 0, padding: 0,
+                        display: 'grid',
+                        gridTemplateColumns: cols === 2 ? '1fr 1fr' : '280px',
+                        gap: '2px 40px',
+                      }}
+                    >
+                      {item.links!.map((link) => (
+                        <li key={link.href}>
+                          <Link
+                            href={link.href}
+                            onClick={() => setOpenItem(null)}
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: 8,
+                              padding: '7px 10px', borderRadius: 6,
+                              fontSize: 13.5, fontWeight: 500,
+                              color: 'rgba(255,255,255,0.6)', textDecoration: 'none',
+                              fontFamily: 'var(--font-inter)',
+                              transition: 'color 0.12s, background 0.12s',
+                            }}
+                            onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
+                            onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.6)'; e.currentTarget.style.background = 'transparent' }}
+                          >
+                            <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#3399E0', flexShrink: 0, opacity: 0.6 }} />
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Video (Solutions only) */}
+                  {hasVideo && (
+                    <div style={{ width: 280, flexShrink: 0, borderRadius: 10, overflow: 'hidden', position: 'relative', aspectRatio: '16/9', background: '#040C18' }}>
+                      <video
+                        ref={videoRef}
+                        src={(item as { videoSrc: string }).videoSrc}
+                        muted loop playsInline preload="none"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      />
+                      {/* BPL logo watermark */}
+                      <div style={{ position: 'absolute', top: 8, right: 8, width: 24, height: 24, borderRadius: 5, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(6px)' }}>
+                        <Image src="/images/logo/BPL_LOGO.png" alt="BPL" width={24} height={24} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )
