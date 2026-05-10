@@ -11,7 +11,7 @@ import { HOTSPOT_PRODUCTS } from '@/lib/hotspot-products'
 
 export { HOTSPOT_PRODUCTS }
 
-const TRUCK_PATH = '/truck%20(1).glb'
+const TRUCK_PATH = '/truck-compressed.glb'
 
 const TAG_COLORS_HOTSPOT: Record<string, string> = {
   'Video Telematics': '#3399E0',
