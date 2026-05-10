@@ -38,6 +38,7 @@ function HotspotMarker({
   const color = TAG_COLORS_HOTSPOT[product.tag] ?? '#3399E0'
   const partnerColor = product.partner ? (TAG_COLORS_HOTSPOT[product.partner.tag] ?? '#3399E0') : color
   const goRight = product.position[0] >= 0
+  const anchor  = product.anchorBottom ? '-100%' : '-50%'
 
   return (
     <div
@@ -50,7 +51,7 @@ function HotspotMarker({
         userSelect: 'none',
         opacity: isAnyActive && !isActive ? 0.18 : 1,
         transition: 'opacity 0.35s',
-        transform: goRight ? 'translateY(-50%)' : 'translate(-100%, -50%)',
+        transform: goRight ? `translateY(${anchor})` : `translate(-100%, ${anchor})`,
       }}
     >
       {/* Anchor dot */}
