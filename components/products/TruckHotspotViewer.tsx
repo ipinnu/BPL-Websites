@@ -292,7 +292,7 @@ interface Props {
 
 export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden' }}>
       <TruckErrorBoundary>
         <Canvas
           camera={{ position: [24, 9, 36], fov: 26 }}

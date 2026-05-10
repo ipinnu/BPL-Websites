@@ -500,7 +500,7 @@ export default function FleetScene() {
       camera={{ position: [-5, 62, 207], fov: 52 }}
       dpr={[1, 1.5]}
       gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-      style={{ position: 'absolute', inset: 0 }}
+      style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}
     >
       <Scene />
     </Canvas>
