@@ -263,7 +263,7 @@ export function Navbar() {
                   zIndex: 10,
                 }}
               >
-                <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 40px 24px', display: 'flex', gap: 32, alignItems: 'flex-start' }}>
+                <div style={{ maxWidth: 1280, margin: '0 auto', padding: '20px 40px 24px', display: 'flex', gap: 32, alignItems: 'center' }}>
                   {/* Links */}
                   <div style={{ flex: 1 }}>
                     <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase', color: 'rgba(51,153,224,0.5)', marginBottom: 14, fontFamily: 'var(--font-inter)' }}>
@@ -303,16 +303,20 @@ export function Navbar() {
 
                   {/* Video (Solutions only) */}
                   {hasVideo && (
-                    <div style={{ width: 280, flexShrink: 0, borderRadius: 10, overflow: 'hidden', position: 'relative', aspectRatio: '16/9', background: '#040C18' }}>
-                      <video
-                        ref={videoRef}
-                        src={(item as { videoSrc: string }).videoSrc}
-                        muted loop playsInline preload="none"
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                      />
-                      {/* BPL logo watermark */}
-                      <div style={{ position: 'absolute', top: 8, right: 8, width: 24, height: 24, borderRadius: 5, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(6px)' }}>
-                        <Image src="/images/logo/BPL_LOGO.png" alt="BPL" width={24} height={24} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{ width: 280, flexShrink: 0 }}>
+                      <p style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.13em', textTransform: 'uppercase', color: 'rgba(51,153,224,0.5)', marginBottom: 10, fontFamily: 'var(--font-inter)' }}>
+                        Fleet Intelligence
+                      </p>
+                      <div style={{ borderRadius: 10, overflow: 'hidden', position: 'relative', aspectRatio: '16/9', background: '#040C18' }}>
+                        <video
+                          ref={videoRef}
+                          src={(item as { videoSrc: string }).videoSrc}
+                          muted loop playsInline preload="none"
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                        <div style={{ position: 'absolute', top: 8, right: 8, width: 24, height: 24, borderRadius: 5, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(6px)' }}>
+                          <Image src="/images/logo/BPL_LOGO.png" alt="BPL" width={24} height={24} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
                       </div>
                     </div>
                   )}
