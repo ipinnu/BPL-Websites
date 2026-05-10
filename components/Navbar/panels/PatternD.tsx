@@ -281,7 +281,7 @@ export function PatternD({ config, isOpen, onClose }: Props) {
 
         {/* ── Right: Video ──────────────────────────────────────────── */}
         {config.videoSrc && (
-          <div style={{ width: 180, flexShrink: 0, padding: '20px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ width: 324, flexShrink: 0, padding: '20px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{
               borderRadius: 10, overflow: 'hidden', position: 'relative',
               aspectRatio: '16/9',
@@ -312,11 +312,6 @@ export function PatternD({ config, isOpen, onClose }: Props) {
                   style={{ width: 48, height: 48, objectFit: 'contain', opacity: 0.35 }}
                 />
               </div>
-              <div style={{
-                position: 'absolute', bottom: 0, left: 0, right: 0, height: '30%',
-                background: 'linear-gradient(to top, rgba(4,12,24,0.7) 0%, transparent 100%)',
-                pointerEvents: 'none',
-              }} />
               <div style={{
                 position: 'absolute', top: 6, right: 7, zIndex: 2,
                 width: 18, height: 18, borderRadius: 4, overflow: 'hidden',

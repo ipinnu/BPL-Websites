@@ -100,7 +100,7 @@ export const NAV_ITEMS: NavItem[] = [
         { label: 'Fuel Monitoring',               href: '/solutions#fuel' },
         { label: 'Supply Chain Management',       href: '/solutions#supply-chain' },
       ],
-      videoSrc: '/videos/MiX%20Telematics%20_%20Hardware%20_%20MiX%20Vision.mp4',
+      videoSrc: '/videos/mix-vision.mp4',
       columns: [
         {
           iconKey: 'platform',
@@ -197,7 +197,7 @@ export const NAV_ITEMS: NavItem[] = [
         { label: 'Contact Support', href: '/contact' },
       ],
       // stock footage — data dashboard screens, analytics displays
-      videoSrc: '/videos/MiX%20Telematics%20_%20Hardware%20_%20MiX%20Vision.mp4',
+      videoSrc: '/videos/mix-vision.mp4',
       videoLabel: 'Fleet intelligence insights & knowledge hub',
       videoHref: '/resources',
       editorialCards: [
