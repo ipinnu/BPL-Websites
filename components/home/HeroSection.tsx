@@ -89,8 +89,8 @@ export function HeroSection() {
 
         {/* Left seam — matches dark left panel */}
         <div
-          className="absolute inset-y-0 left-0 pointer-events-none z-10 hidden lg:block"
-          style={{ width: '55%', background: 'linear-gradient(to right, #040C18 0%, #040C18 15%, rgba(4,12,24,0.85) 40%, rgba(4,12,24,0.4) 65%, transparent 100%)' }}
+          className="absolute inset-y-0 left-0 w-20 pointer-events-none z-10 hidden lg:block"
+          style={{ background: 'linear-gradient(to right, #040C18 0%, transparent 100%)' }}
         />
 
         {/* Right edge — very thin, just a clean finish */}
