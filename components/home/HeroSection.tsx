@@ -16,9 +16,11 @@ export function HeroSection() {
   return (
     <section className="relative min-h-[calc(100vh-104px)] overflow-hidden">
 
-      {/* ── 3D canvas — full width background ── */}
+      {/* ── 3D canvas — pinned to right half, background fills full width ── */}
       <div className="absolute inset-0" style={{ background: '#030D1A' }}>
-        <FleetScene />
+        <div className="absolute top-0 bottom-0 right-0 w-[55%]">
+          <FleetScene />
+        </div>
       </div>
 
       {/* ── Copy — sits on top, left half ── */}
