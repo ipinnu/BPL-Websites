@@ -252,23 +252,6 @@ function TruckScene({
 
 useGLTF.preload(TRUCK_PATH)
 
-// ─── Loading spinner ──────────────────────────────────────────────────────────
-
-function LoadingSpinner() {
-  return (
-    <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-      <motion.div
-        style={{ width: 40, height: 40, border: '2px solid rgba(0,120,212,0.2)', borderTop: '2px solid #0078D4', borderRadius: '50%' }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-      />
-      <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-inter)', letterSpacing: '0.08em' }}>
-        Loading truck model...
-      </span>
-    </div>
-  )
-}
-
 // ─── Error boundary — prevents 3D crash from taking down the page ─────────────
 
 class TruckErrorBoundary extends Component<
@@ -296,7 +279,7 @@ export function TruckHotspotViewer({ onSelectProduct, activeSlug }: Props) {
       <TruckErrorBoundary>
         <Canvas
           camera={{ position: [24, 9, 36], fov: 26 }}
-          shadows
+          shadows={{ type: THREE.PCFShadowMap }}
           gl={{ alpha: true, antialias: true }}
           style={{ background: 'transparent' }}
         >

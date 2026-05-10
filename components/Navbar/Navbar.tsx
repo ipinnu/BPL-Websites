@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { NAV_ITEMS } from './navbar.config'
 import type { NavItem, PatternAConfig, PatternBConfig, PatternCConfig, PatternDConfig } from './navbar.config'
-import { PatternA } from './panels/PatternA'
-import { PatternB } from './panels/PatternB'
-import { PatternC } from './panels/PatternC'
-import { PatternD } from './panels/PatternD'
+
+const PatternA = dynamic(() => import('./panels/PatternA').then(m => ({ default: m.PatternA })), { ssr: false })
+const PatternB = dynamic(() => import('./panels/PatternB').then(m => ({ default: m.PatternB })), { ssr: false })
+const PatternC = dynamic(() => import('./panels/PatternC').then(m => ({ default: m.PatternC })), { ssr: false })
+const PatternD = dynamic(() => import('./panels/PatternD').then(m => ({ default: m.PatternD })), { ssr: false })
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -66,6 +68,7 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
+  const [mountedPanels, setMountedPanels] = useState<Set<string>>(new Set())
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pathname = usePathname()
 
@@ -74,6 +77,14 @@ export function Navbar() {
     const handler = () => setScrolled(window.scrollY > 10)
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
+  }, [])
+
+  // Preload panel chunks in the background after hydration so they're ready on first hover
+  useEffect(() => {
+    import('./panels/PatternA')
+    import('./panels/PatternB')
+    import('./panels/PatternC')
+    import('./panels/PatternD')
   }, [])
 
   // Close everything on route change
@@ -116,6 +127,7 @@ export function Navbar() {
       clearTimeout(closeTimer.current)
       closeTimer.current = null
     }
+    setMountedPanels(prev => prev.has(label) ? prev : new Set([...prev, label]))
     setOpenItem(label)
   }
 
@@ -246,7 +258,10 @@ export function Navbar() {
                           aria-expanded={isActive}
                           aria-haspopup="true"
                           onMouseEnter={() => handleItemEnter(item.label, true)}
-                          onClick={() => setOpenItem(isActive ? null : item.label)}
+                          onClick={() => {
+                            setMountedPanels(prev => prev.has(item.label) ? prev : new Set([...prev, item.label]))
+                            setOpenItem(isActive ? null : item.label)
+                          }}
                           style={{
                             display: 'flex',
                             alignItems: 'center',
@@ -425,22 +440,22 @@ export function Navbar() {
                 }}
               >
                 <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-                  {isPatternA(item.config) && (
+                  {mountedPanels.has(item.label) && isPatternA(item.config) && (
                     <div onClick={() => setOpenItem(null)}>
                       <PatternA config={item.config} isOpen={isOpen} />
                     </div>
                   )}
-                  {isPatternB(item.config) && (
+                  {mountedPanels.has(item.label) && isPatternB(item.config) && (
                     <div onClick={() => setOpenItem(null)}>
                       <PatternB config={item.config} />
                     </div>
                   )}
-                  {isPatternC(item.config) && (
+                  {mountedPanels.has(item.label) && isPatternC(item.config) && (
                     <div onClick={() => setOpenItem(null)}>
                       <PatternC config={item.config} />
                     </div>
                   )}
-                  {isPatternD(item.config) && (
+                  {mountedPanels.has(item.label) && isPatternD(item.config) && (
                     <PatternD config={item.config} isOpen={isOpen} onClose={() => setOpenItem(null)} />
                   )}
                 </div>
